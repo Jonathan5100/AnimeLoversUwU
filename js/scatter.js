@@ -3,7 +3,7 @@ class Scatter {
         this.anime_data = data;
         console.log('yo from scatter');
         // set up svg
-        this.width = 700;
+        this.width = 1200;
         this.height = 2000;
         this.svg = d3.select("#plot-chart-div")
             .append("svg")
@@ -95,6 +95,10 @@ class Scatter {
             return circles;
         }
 
+        let click = (event, d) => {
+            console.log(d)
+        };
+
         this.svg.append("g")
             .selectAll("circle")
             .data(dodge(this.anime_data))
@@ -104,7 +108,9 @@ class Scatter {
             .attr("cx", d => d.x)
             .attr("cy", d => d.y + 130)
             .attr("r", d => d.r)
-            .append("title")
+            .on("click", click)
+
+        .append("title")
             .text(d => d.data.anime);
 
     }
