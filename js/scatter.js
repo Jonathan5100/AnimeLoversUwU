@@ -1,6 +1,6 @@
 class Scatter {
-    constructor(data) {
-        this.anime_data = data;
+    constructor(globalApplicationState) {
+        this.globalApplicationState = globalApplicationState;
         console.log('yo from scatter');
         // set up svg
         this.width = 1200;
@@ -18,7 +18,8 @@ class Scatter {
 
         this.color = d3.scaleSequential([1, 5], d3.interpolatePlasma)
 
-        let totals = d3.extent(data.map((d) => +d.episodes));
+        let totals = d3.extent( this.globalApplicationState.anime_data
+            .map((d) => +d.episodes));
         this.size = d3.scaleSqrt().domain(totals).range([3, 35]);
 
         this.DrawAxis();
@@ -101,7 +102,7 @@ class Scatter {
 
         this.svg.append("g")
             .selectAll("circle")
-            .data(dodge(this.anime_data))
+            .data(dodge(this.globalApplicationState.anime_data))
             .join("circle")
             .attr("stroke", "black")
             .attr("fill", d => this.color(+d.data.rate))
@@ -112,6 +113,9 @@ class Scatter {
 
         .append("title")
             .text(d => d.data.anime);
-
+    }
+    update(){
+        console.log("update from scatter");
+        console.log(this.globalApplicationState.selected_anime);
     }
 }
