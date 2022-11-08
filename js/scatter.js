@@ -18,7 +18,7 @@ class Scatter {
 
         this.color = d3.scaleSequential([1, 5], d3.interpolatePlasma)
 
-        let totals = d3.extent( this.globalApplicationState.anime_data
+        let totals = d3.extent(this.globalApplicationState.anime_data
             .map((d) => +d.episodes));
         this.size = d3.scaleSqrt().domain(totals).range([3, 35]);
 
@@ -114,8 +114,7 @@ class Scatter {
         .append("title")
             .text(d => d.data.anime);
     }
-    update(){
-        console.log("update from scatter");
-        console.log(this.globalApplicationState.selected_anime);
+    update() {
+        console.log(this.globalApplicationState.anime_utils.getGeners(this.globalApplicationState.selected_anime));
     }
 }
