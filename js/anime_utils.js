@@ -1,7 +1,7 @@
 class Anime_Utils {
     constructor() {}
     getAllInGenres(data, genre) {
-        data.filter(d => d[genre] === "1.0");
+        return data.filter(d => d[genre] === "1.0");
     }
     getGeners(anime) {
         let geners = [];

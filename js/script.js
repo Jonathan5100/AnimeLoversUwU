@@ -21,7 +21,7 @@ Promise.all([anime_data]).then((data) => {
 
     globalApplicationState.scatter = scatter;
     globalApplicationState.graph = graph;
-    globalApplicationState.pies = scatter;
+    globalApplicationState.pies = pies;
 
     let selector = d3.select("#anime_selector");
     selector.selectAll('option').data(anime_data)
@@ -37,6 +37,7 @@ Promise.all([anime_data]).then((data) => {
         let selectedOption = JSON.parse(d3.select(this).property("value"));
         globalApplicationState.selected_anime = selectedOption;
         globalApplicationState.scatter.update();
+        globalApplicationState.pies.update();
         d3.select("#anime_image")
             .attr("src", selectedOption.anime_img);
     })
