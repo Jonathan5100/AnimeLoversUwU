@@ -1,6 +1,6 @@
 class Graph {
-    constructor(data){
-        this.anime_data = data;
+    constructor(globalApplicationState){
+        this.globalApplicationState = globalApplicationState;
         console.log('yo from graph');
     }
 }
