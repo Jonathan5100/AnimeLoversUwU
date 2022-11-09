@@ -1,5 +1,6 @@
 class Anime_Utils {
     constructor() {}
+    
     getAllInGenres(data, genre) {
         return data.filter(d => d[genre] === "1.0");
     }
