@@ -4,7 +4,7 @@ class Scatter {
         console.log('yo from scatter');
         // set up svg
         this.width = 1200;
-        this.height = 2000;
+        this.height = 1100;
         this.svg = d3.select("#plot-chart-div")
             .append("svg")
             .attr("class", "scatter")
@@ -97,6 +97,8 @@ class Scatter {
         }
 
         let click = (event, d) => {
+            d3.select("#anime_image")
+                .attr("src", d.data.anime_img)
             console.log(d)
         };
 
