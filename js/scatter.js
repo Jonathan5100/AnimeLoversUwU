@@ -111,8 +111,7 @@ class Scatter {
 
             $select.value = optionToSelect.value;
             $select.dispatchEvent(new Event('change'));
-
-            console.log(d)
+            this.update()
         };
 
         this.svg.append("g")
@@ -129,7 +128,25 @@ class Scatter {
         .append("title")
             .text(d => d.data.anime);
     }
+
     update() {
-        console.log(this.globalApplicationState.anime_utils.getGeners(this.globalApplicationState.selected_anime));
+        let au = new Anime_Utils()
+        let total = []
+        let genres = this.globalApplicationState.anime_utils.getGeners(this.globalApplicationState.selected_anime)
+        d3.selectAll("circle").attr("opacity", d => {
+            let genres2 = au.getGeners(d.data)
+            const filteredArray = genres.filter(value => genres2.includes(value));
+
+            if (filteredArray.length == 0)
+                return 0.5
+
+            total.push(filteredArray)
+            return 1
+        })
+
+        if (total.length == 0)
+            d3.selectAll("circle").attr("opacity", 1)
+
+
     }
 }
