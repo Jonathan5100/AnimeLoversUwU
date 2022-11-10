@@ -1,7 +1,8 @@
 class Scatter {
     constructor(globalApplicationState) {
         this.globalApplicationState = globalApplicationState;
-        console.log('yo from scatter');
+        this.au = new Anime_Utils()
+
         // set up svg
         this.width = 1200;
         this.height = 1100;
@@ -17,9 +18,10 @@ class Scatter {
             .range([30, this.width - 30]);
 
         this.color = d3.scaleSequential([1, 5], d3.interpolatePlasma)
-
+            // get the total episodes
         let totals = d3.extent(this.globalApplicationState.anime_data
             .map((d) => +d.episodes));
+        // base size of of episode sizes
         this.size = d3.scaleSqrt().domain(totals).range([3, 35]);
 
         this.DrawAxis();
@@ -27,13 +29,16 @@ class Scatter {
 
     }
 
+    // draws single x-axis
     DrawAxis() {
 
+        // tick marks
         this.svg.append("g")
             .attr("transform", "translate(0," + 85 + ")")
             .call(d3.axisBottom(this.x).ticks(10))
             .call(g => g.select(".domain").remove())
 
+        // axis labels
         this.svg.append("g")
             .append("text")
             .attr("x", 10)
@@ -50,6 +55,7 @@ class Scatter {
             .text("High Rated Animes");
     }
 
+    // draws all circles in graph
     DrawCircle() {
         // https://observablehq.com/@tomwhite/beeswarm-bubbles
         let dodge = (data) => {
@@ -96,24 +102,39 @@ class Scatter {
             return circles;
         }
 
+        // click event added to all circles
         //https://alvarotrigo.com/blog/javascript-select-option/
         let click = (event, d) => {
+
+            // correct image
             d3.select("#anime_image")
                 .attr("src", d.data.anime_img)
 
+            // get selector of animes
             const $select = document.querySelector('#anime_selector');
             const $options = Array.from($select.options);
-            console.log($options)
-            const optionToSelect = $options.find(item => {
-                console.log(item)
-                return item.text === d.data.anime
-            });
+            // get option that matches anime name
+            let optionToSelect = null;
+            for (let i = 0; i < $options.length; i++) {
 
+                console.log($options[i].text === d.data.anime)
+                if ($options[i].text === d.data.anime) {
+                    optionToSelect = $options[i]
+                    break;
+                }
+            }
+
+            if (optionToSelect == null) {
+
+                optionToSelect = $options[3]
+            }
+            // set selector selection
             $select.value = optionToSelect.value;
+            // let program know selector has been changed
             $select.dispatchEvent(new Event('change'));
-            this.update()
         };
 
+        // add circles
         this.svg.append("g")
             .selectAll("circle")
             .data(dodge(this.globalApplicationState.anime_data))
@@ -124,19 +145,31 @@ class Scatter {
             .attr("cy", d => d.y + 130)
             .attr("r", d => d.r)
             .on("click", click)
-
-        .append("title")
+            .append("title")
             .text(d => d.data.anime);
     }
 
+    // what to do when an anime has been selected
     update() {
-        let au = new Anime_Utils()
         let total = []
-        let genres = this.globalApplicationState.anime_utils.getGeners(this.globalApplicationState.selected_anime)
-        d3.selectAll("circle").attr("opacity", d => {
-            let genres2 = au.getGeners(d.data)
-            const filteredArray = genres.filter(value => genres2.includes(value));
+            // get genre of selected animes
+        let genresOfSelected = this.globalApplicationState.anime_utils.getGeners(this.globalApplicationState.selected_anime)
 
+        // check that this has any genres
+        if (genresOfSelected.length == 0) {
+
+            d3.selectAll("circle").attr("opacity", 1)
+            return
+        }
+
+        d3.selectAll("circle").attr("opacity", d => {
+            // go through all data and get its genres
+            let genresOfRandom = this.au.getGeners(d.data)
+
+            // check if arbritrary anime has any matching genres
+            const filteredArray = genresOfSelected.filter(value => genresOfRandom.includes(value));
+
+            // if the intersection of genres is not empty
             if (filteredArray.length == 0)
                 return 0.5
 
@@ -144,6 +177,7 @@ class Scatter {
             return 1
         })
 
+        // check if any genres were the same as what was selected
         if (total.length == 0)
             d3.selectAll("circle").attr("opacity", 1)
 
