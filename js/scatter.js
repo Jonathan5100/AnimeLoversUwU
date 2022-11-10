@@ -96,9 +96,22 @@ class Scatter {
             return circles;
         }
 
+        //https://alvarotrigo.com/blog/javascript-select-option/
         let click = (event, d) => {
             d3.select("#anime_image")
                 .attr("src", d.data.anime_img)
+
+            const $select = document.querySelector('#anime_selector');
+            const $options = Array.from($select.options);
+            console.log($options)
+            const optionToSelect = $options.find(item => {
+                console.log(item)
+                return item.text === d.data.anime
+            });
+
+            $select.value = optionToSelect.value;
+            $select.dispatchEvent(new Event('change'));
+
             console.log(d)
         };
 
