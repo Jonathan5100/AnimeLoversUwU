@@ -1,6 +1,8 @@
 class Anime_Utils {
-    constructor() {}
-    
+    constructor() { }
+    getAllAnime(data) {
+        return data.map(d => d.anime);
+    }
     getAllInGenres(data, genre) {
         return data.filter(d => d[genre] === "1.0");
     }
