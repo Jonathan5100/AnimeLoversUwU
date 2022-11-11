@@ -117,7 +117,6 @@ class Scatter {
             let optionToSelect = null;
             for (let i = 0; i < $options.length; i++) {
 
-                console.log($options[i].text === d.data.anime)
                 if ($options[i].text === d.data.anime) {
                     optionToSelect = $options[i]
                     break;

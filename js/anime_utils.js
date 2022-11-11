@@ -1,5 +1,5 @@
 class Anime_Utils {
-    constructor() { }
+    constructor() {}
     getAllAnime(data) {
         return data.map(d => d.anime);
     }
@@ -7,6 +7,8 @@ class Anime_Utils {
         return data.filter(d => d[genre] === "1.0");
     }
     getGeners(anime) {
+        if (anime == null)
+            return [];
         let geners = [];
         if (anime.genre_action === '1.0') {
             geners.push("genre_action");
