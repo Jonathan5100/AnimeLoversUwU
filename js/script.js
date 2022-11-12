@@ -11,7 +11,7 @@ Promise.all([anime_data]).then((data) => {
     };
 
     let anime_data = data[0];
-    console.log(anime_data);
+
     globalApplicationState.anime_data = anime_data;
     globalApplicationState.anime_utils = new Anime_Utils();
 
@@ -35,11 +35,20 @@ Promise.all([anime_data]).then((data) => {
         .text(function(d) {
             return d.anime;
         });
+
+    gSelector.selectAll('option').data(globalApplicationState.anime_utils.getAllGenres)
+        .enter()
+        .append('option')
+        .attr('value', function(d) {
+            return JSON.stringify(d);
+        })
+        .text(function(d) {
+            return d
+        })
+
     selector.on("change", function(d) {
         let selectedOption = JSON.parse(d3.select(this).property("value"));
         globalApplicationState.selected_anime = selectedOption;
-        globalApplicationState.scatter.update();
-        globalApplicationState.pies.update();
         d3.select("#anime_image")
             .attr("src", selectedOption.anime_img);
 
@@ -59,7 +68,14 @@ Promise.all([anime_data]).then((data) => {
             .text(function(d) {
                 return d;
             });
-
+        globalApplicationState.scatter.update();
+        globalApplicationState.pies.update();
 
     })
+
+    gSelector.on("change", function(d) {
+
+        globalApplicationState.scatter.update();
+    })
+
 });

@@ -89,7 +89,7 @@ class Anime_Utils {
             geners.push("genre_thriller");
         }
 
-        if (geners.length == 1) {
+        if (geners.length == 0) {
 
             geners = this.getAllGenres();
 

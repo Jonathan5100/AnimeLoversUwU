@@ -71,9 +71,11 @@ class Scatter {
 
     // draws all circles in graph
     DrawCircle() {
+
         // https://observablehq.com/@tomwhite/beeswarm-bubbles
         let dodge = (data) => {
             const circles = data.map(d => ({ x: this.x(+d.rate), r: this.size(+d.episodes), data: d })).sort((a, b) => b.r - a.r);
+
             const epsilon = 1e-3;
             let head = null,
                 tail = null,
@@ -112,7 +114,6 @@ class Scatter {
                     queue = head;
                 } else tail = tail.next = b;
             }
-
             return circles;
         }
 
@@ -164,9 +165,12 @@ class Scatter {
 
     // what to do when an anime has been selected
     update() {
+
         let total = []
-            // get genre of selected animes
-        let genresOfSelected = this.globalApplicationState.anime_utils.getGeners(this.globalApplicationState.selected_anime)
+
+        // get genre of selected animes
+        let genresOfSelected = JSON.parse(d3.select("#genre_selector").property("value"));
+        let animesWithSelected = this.au.getAllInGenres(this.globalApplicationState.anime_data, genresOfSelected)
 
         // check that this has any genres
         if (genresOfSelected.length == 0) {
@@ -175,24 +179,21 @@ class Scatter {
             return
         }
 
+
         d3.selectAll("circle").attr("opacity", d => {
-            // go through all data and get its genres
-            let genresOfRandom = this.au.getGeners(d.data)
 
-            // check if arbritrary anime has any matching genres
-            const filteredArray = genresOfSelected.filter(value => genresOfRandom.includes(value));
+            console.log(d.data != null)
 
-            // if the intersection of genres is not empty
-            if (filteredArray.length == 0)
-                return 0.3
-
-            total.push(filteredArray)
             return 1
         })
 
-        // check if any genres were the same as what was selected
-        if (total.length == 0)
-            d3.selectAll("circle").attr("opacity", 1)
+        d3.selectAll("circle").attr("opacity", d => {
+
+            // if the intersection of genres is not empty
+            if (d.data != null && d.data[genresOfSelected] === "0.0") return 0.3
+
+            return 1
+        })
 
 
     }
