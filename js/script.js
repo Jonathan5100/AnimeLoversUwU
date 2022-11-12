@@ -24,6 +24,8 @@ Promise.all([anime_data]).then((data) => {
     globalApplicationState.pies = pies;
 
     let selector = d3.select("#anime_selector");
+    let gSelector = d3.select("#genre_selector");
+
     selector.selectAll('option').data(anime_data)
         .enter()
         .append('option')
@@ -40,5 +42,24 @@ Promise.all([anime_data]).then((data) => {
         globalApplicationState.pies.update();
         d3.select("#anime_image")
             .attr("src", selectedOption.anime_img);
+
+
+        let geners = globalApplicationState.anime_utils.getGeners(selectedOption)
+
+        let appending = gSelector.selectAll('option').data([]);
+
+        appending.exit().remove();
+
+        appending = gSelector.selectAll('option').data(geners);
+        appending.enter()
+            .append('option')
+            .attr('value', function(d) {
+                return JSON.stringify(d);
+            })
+            .text(function(d) {
+                return d;
+            });
+
+
     })
 });

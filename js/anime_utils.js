@@ -8,7 +8,8 @@ class Anime_Utils {
     }
     getGeners(anime) {
         if (anime == null)
-            return [];
+            return this.getAllGenres();
+
         let geners = [];
         if (anime.genre_action === '1.0') {
             geners.push("genre_action");
@@ -87,6 +88,42 @@ class Anime_Utils {
         if (anime.genre_thriller === '1.0') {
             geners.push("genre_thriller");
         }
+
+        if (geners.length == 1) {
+
+            geners = this.getAllGenres();
+
+        }
+        return geners;
+    }
+
+    getAllGenres() {
+
+        let geners = [];
+        geners.push("genre_action");
+        geners.push("genre_adventure");
+        geners.push("genre_comedy");
+        geners.push("genre_drama");
+        geners.push("genre_family");
+        geners.push("genre_fantasy");
+        geners.push("genre_food");
+        geners.push("genre_harem");
+        geners.push("genre_historical");
+        geners.push("genre_horror");
+        geners.push("genre_idols");
+        geners.push("genre_isekai");
+        geners.push("genre_jdrama");
+        geners.push("genre_mecha");
+        geners.push("genre_music");
+        geners.push("genre_mystery");
+        geners.push("genre_romance");
+        geners.push("genre_seinen");
+        geners.push("genre_sgdrama");
+        geners.push("genre_shojo");
+        geners.push("genre_shonen");
+        geners.push("genre_sports");
+        geners.push("genre_supernatural");
+        geners.push("genre_thriller");
         return geners;
     }
 }
