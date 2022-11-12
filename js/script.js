@@ -36,7 +36,9 @@ Promise.all([anime_data]).then((data) => {
             return d.anime;
         });
 
-    gSelector.selectAll('option').data(globalApplicationState.anime_utils.getAllGenres)
+    let all = globalApplicationState.anime_utils.getAllGenres()
+    all.unshift("Select a Genre")
+    gSelector.selectAll('option').data(all)
         .enter()
         .append('option')
         .attr('value', function(d) {
@@ -58,7 +60,7 @@ Promise.all([anime_data]).then((data) => {
         let appending = gSelector.selectAll('option').data([]);
 
         appending.exit().remove();
-
+        geners.unshift("Select a Genre")
         appending = gSelector.selectAll('option').data(geners);
         appending.enter()
             .append('option')
