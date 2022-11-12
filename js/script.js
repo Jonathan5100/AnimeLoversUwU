@@ -56,7 +56,8 @@ Promise.all([anime_data]).then((data) => {
 
 
         let geners = globalApplicationState.anime_utils.getGeners(selectedOption)
-
+        if (geners.length == 0)
+            geners = globalApplicationState.anime_utils.getAllGenres()
         let appending = gSelector.selectAll('option').data([]);
 
         appending.exit().remove();
