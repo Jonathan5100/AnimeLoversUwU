@@ -17,8 +17,13 @@ class Scatter {
             .domain([1, 5])
             .range([30, this.width - 30]);
 
-        this.color = d3.scaleSequential([1, 5], d3.interpolatePlasma)
-            // get the total episodes
+        let votes = d3.extent(this.globalApplicationState.anime_data
+            .map((d) => +d.votes));
+        this.color = d3.scaleLinear()
+            .domain([votes[0], votes[1] / 200, votes[1]])
+            .range(["#F0F2FF", "#6699FF", "#000000"])
+
+        // get the total episodes
         let totals = d3.extent(this.globalApplicationState.anime_data
             .map((d) => +d.episodes));
         // base size of of episode sizes
@@ -139,7 +144,7 @@ class Scatter {
             .data(dodge(this.globalApplicationState.anime_data))
             .join("circle")
             .attr("stroke", "black")
-            .attr("fill", d => this.color(+d.data.rate))
+            .attr("fill", d => this.color(+d.data.votes))
             .attr("cx", d => d.x)
             .attr("cy", d => d.y + 130)
             .attr("r", d => d.r)
@@ -170,7 +175,7 @@ class Scatter {
 
             // if the intersection of genres is not empty
             if (filteredArray.length == 0)
-                return 0.5
+                return 0.3
 
             total.push(filteredArray)
             return 1
