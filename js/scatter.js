@@ -53,6 +53,15 @@ class Scatter {
 
         this.svg.append("g")
             .append("text")
+            .style("font-size", "34px")
+            .attr("text-anchor", "end")
+            .attr("x", this.width / 2 + 110)
+            .attr("y", 70)
+            .attr("font-weight", "bold")
+            .text("Anime Ratings");
+
+        this.svg.append("g")
+            .append("text")
             .attr("text-anchor", "end")
             .attr("x", this.width)
             .attr("y", 70)

@@ -14,26 +14,43 @@
 </head>
 
 <body>
-    <div id="header-wrap" class="mt-3 m-2">
+    <div class="container-fluid fixed-container" id="header-wrap" class="mt-5 m-2">
         <header>
             <h1>Anime Lovers UWU</h1>
-            <!-- <div>Name: Jonathan Rodriguez; E-Mail: u1202058@utah.edu; UID: u1202058</div> -->
+            <h4>Project By: Amitoj Singh, Jonathan Rodriguez, John Huynh; </h4>
         </header>
     </div>
     <div class="container-fluid fixed-container">
         <div class="row">
             <div id="" class="col-12 fixed-full">
+
                 <select id="anime_selector" class="form-select">
                     <option selected>Pick an Anime</option>
                 </select>
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-1">
+            <div class="col-2 mt-5">
+                <h5>The first is plot is quite simple. It is supposed to be a scatter, beeswarm, plot that plots the ratings of various animes. The size of nodes represents the number of episodes, the color represents the number of votes, and position represents
+                    the rating of anime. Interactibility between the nodes in the plot and the pie chart makes it so that a selection in the plot chart highlights the genres in the pie chart. The pie chart highlights an anime with genres, from there we
+                    see the average ratings in a genre, and the distribution of ratings for the selected anime.
+                </h5>
+
+            </div>
+
+
+            <div id="image-div m-3" class="col-2">
+                <br>
+                <br>
+
+                <img id="anime_image" src="https://img1.ak.crunchyroll.com/i/spire4/1c1df98707aa0f22aa54342af725e48a1491245343_full.jpg" class="rounded  img-fluid  w-1 anime-image" alt="N">
+
+            </div>
             <div id="plot-chart-div" class="col-8">
             </div>
-            <div id="image-div" class="col-4 mt-5">
-                <img id="anime_image" src="https://img1.ak.crunchyroll.com/i/spire4/1c1df98707aa0f22aa54342af725e48a1491245343_full.jpg" class="rounded mx-auto d-block anime-image" alt="N">
-            </div>
+        </div>
+        <div class="row">
+
         </div>
         <div class="row">
             <div id="pie-chart-genre-div" class="col-6">
