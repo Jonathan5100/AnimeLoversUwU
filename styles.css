@@ -20,7 +20,16 @@
 .jumbotron {
     padding: 2rem 1rem;
     margin-bottom: 2rem;
-    background-color: lightblue;
     border-radius: .3rem;
+    background-image:  linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url(https://w0.peakpx.com/wallpaper/403/532/HD-wallpaper-bulma-bunny-girl-cute-tv-series-anime-dragon-ball-bulma-briefs-manga-dragon-ball-z.jpg);
+    background-size: cover;
+    background-position:center;
     /* background:transparent !important; */
   }
+  .jumbotron h1{
+    color: #fff;
+}
+
+.jumbotron p{
+    color: #fff;
+}
