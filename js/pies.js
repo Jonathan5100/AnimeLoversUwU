@@ -1,24 +1,99 @@
+//used this as help https://observablehq.com/@analyzer2004/waffle-chart 
 class Pies {
     radius = 300;
+    width = 600;
+    waffleSize = 55;
+    padding= {x:0, y:0};
+    colors = ['#ffd384','#94ebcd','#fbaccc','#d3e0ea','#fa7f72'];
+    ratings = ["Five Star","Four Star","Three Star","Two Star","One Star"];
     constructor(globalApplicationState){
         this.globalApplicationState = globalApplicationState;
         this.svg_anime =  d3.select('#pie-chart-anime-div').append('svg')
-        .attr('width', 900)
-        .attr('height', 900)
+        .attr('class', "pieSvg")
+        .attr('width', this.width)
+        .attr('height', this.width)
         .attr('id', "pie-chart-anime");
         this.svg_genre =  d3.select('#pie-chart-genre-div').append('svg')
-        .attr('width', 900)
-        .attr('height', 900)
+        .attr('class', "pieSvg")
+        .attr('width', this.width)
+        .attr('height', this.width)
         .attr('id', "pie-chart-anime");
-        console.log('yo from pies');
+
+        let svg_key =  d3.select('#pie-chart-key-div').append('svg')
+        .attr('width', this.width)
+        .attr('height', this.width/2 + 15)
+        .attr('id', "pie-chart-key");
+
+        let offsetX = 175;
+        this. ordScale = d3.scaleOrdinal()
+        .domain(this.ratings)
+        .range(this.colors);
+        svg_key.append('text')
+        .text("Key")
+        .attr("fill", "black")
+        .attr('x', 70 + offsetX)
+        .attr('y', 25)
+        .style("font-size", "34px")
+        .attr("font-weight", "bold");
+        svg_key.selectAll('rect')
+        .data(this.ratings)
+        .join('rect')
+        .text(d=> d)
+        .attr("fill", d => this.ordScale(d))
+        .attr('x', 50 + offsetX)
+        .attr('y', (d,i) => i * 55 + 35)
+        .attr("rx", 3).attr("ry", 3)
+        .attr("width", 100)
+        .attr("height", 50) ;
+
+        svg_key.selectAll('.keyText')
+        .data(this.ratings)
+        .join('text')
+        .text(d=> d)
+        .attr("fill", "black")
+        .attr('x', 70 + offsetX)
+        .attr('y', (d,i) => i * 55 + 65)
+        .attr("rx", 3).attr("ry", 3);
     }
     update() {
-        this.selected_genre = this.globalApplicationState.anime_utils.getGeners(this.globalApplicationState.selected_anime)[0] ?? 'genre_shonen'
+       
+        // this.drawPie(this.svg_anime, data_anime);
+        
+        this.updateGenre();
+        if(this.globalApplicationState.selected_anime === null)
+            return;
         let data_anime = this.getRatingsPerAnime(this.globalApplicationState.selected_anime);
-        let data_genre = this.getRatingsPerGenre(this.selected_genre);
-
-        this.drawPie(this.svg_anime, data_anime);
-        this.drawPie(this.svg_genre, data_genre);
+        let data_genre = this.getRatingsPerGenre(this.globalApplicationState.selected_genre);
+        d3.select("#anime_header").text('' + this.globalApplicationState.selected_anime.anime);
+        d3.select('#info-text').text(
+            'Compared to other animes in the '
+            + this.globalApplicationState.selected_genre.replaceAll('_', ' ') 
+            + ', "' 
+            + this.globalApplicationState.selected_anime.anime 
+            + '" has a '
+            + (data_anime[0].rate_count >= data_genre[0].rate_count ? 'better' :  'worst')
+            + ' then average  percentage of 5 stars. ('
+            + Math.round(data_anime[0].rate_count  * 100) / 100 
+            + '% vs '
+            + Math.round(data_genre[0].rate_count  * 100) / 100 
+            +'%)'
+            + ' When comparing one stars, "'
+            + this.globalApplicationState.selected_anime.anime 
+            + (data_anime[4].rate_count <= data_genre[4].rate_count ? '"has better' :  '"has worst')
+            + ' then average percentage of 1 stars. ('
+            + Math.round(data_anime[4].rate_count  * 100) / 100 
+            + '% vs '
+            + Math.round(data_genre[4].rate_count  * 100) / 100 
+            +'%)'
+        );
+        this.drawWaffle(this.svg_anime, data_anime);
+    }
+    updateGenre(){
+        let data_genre = this.getRatingsPerGenre(this.globalApplicationState.selected_genre);
+        d3.select("#genre_header").text('' + this.globalApplicationState.selected_genre.replaceAll('_', ' ') );
+      
+        this.drawWaffle(this.svg_genre, data_genre);
+        // this.drawPie(this.svg_genre, data_genre);
     }
     getRatingsPerAnime(anime){
         let data = [];
@@ -88,6 +163,51 @@ class Pies {
             .text(function(d) { return d.data.stars; })
             .style("font-family", "arial")
             .style("font-size", 15);
-    
+    }
+    drawWaffle(svg, data){
+        let waffles = this.waffleMyData(data);
+        
+        let g = svg.selectAll(".waffle")  
+        .data(waffles)
+        .join("g")
+        .attr("class", "waffle");
+
+        let numPerRow = 10;
+        g.attr("transform", (d, i) => {
+        let r = Math.floor(i / numPerRow);
+        let c = i - r * numPerRow;
+        return `translate(${c * (this.waffleSize + this.padding.x)},${r * (this.waffleSize + this.padding.y)})`
+        });
+        g.selectAll('rect').remove();
+        let cellSize = 50;
+        let cells = g
+          .selectAll('rect')
+          .data(d => [d])
+          .join('rect')
+          .transition()
+            .duration(1200)
+          .attr("fill", d => this.ordScale(d.stars));
+
+        cells
+          .attr("rx", 3).attr("ry", 3)
+          .attr("width", cellSize).attr("height", cellSize) ;
+    }
+    waffleMyData(data){
+        let waffle = [];
+        let x =0 ,y =0, index =0;
+        for(let d of data){
+            let i =0;
+            for(let i = 0; i < Math.round(d.rate_count); i++){
+                waffle.push({x : x, y:y, stars:d.stars});
+                if (x === 9){
+                    x = 0;
+                    y ++;
+                }else{
+                   x++;
+                }
+            }
+            index++;
+        }
+        return waffle;
     }
 }

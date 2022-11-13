@@ -60,7 +60,7 @@ Promise.all([anime_data]).then((data) => {
         if (geners.length == 0)
             geners = globalApplicationState.anime_utils.getAllGenres()
         let appending = gSelector.selectAll('option').data([]);
-
+        globalApplicationState.selected_genre = geners[0];
         appending.exit().remove();
         geners.unshift("Select a Genre")
         appending = gSelector.selectAll('option').data(geners);
@@ -78,7 +78,6 @@ Promise.all([anime_data]).then((data) => {
         let optionToSelect = $options[1]
 
         if (optionToSelect == null) {
-
             optionToSelect = $options[0]
         }
         // set selector selection
@@ -92,6 +91,7 @@ Promise.all([anime_data]).then((data) => {
     gSelector.on("change", function(d) {
         let selectedOption = JSON.parse(d3.select(this).property("value"));
         globalApplicationState.selected_genre = selectedOption;
+        globalApplicationState.pies.updateGenre();
         globalApplicationState.scatter.update();
     })
 
