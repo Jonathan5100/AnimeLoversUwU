@@ -72,6 +72,18 @@ Promise.all([anime_data]).then((data) => {
             .text(function(d) {
                 return d;
             });
+        const $select = document.querySelector('#genre_selector');
+        const $options = Array.from($select.options);
+        // get option that matches anime name
+        let optionToSelect = $options[1]
+
+        if (optionToSelect == null) {
+
+            optionToSelect = $options[0]
+        }
+        // set selector selection
+        $select.value = optionToSelect.value;
+
         globalApplicationState.scatter.update();
         globalApplicationState.pies.update();
 

@@ -17,19 +17,21 @@
 .fixed-container {
     width: 1800px;
 }
+
 .jumbotron {
     padding: 2rem 1rem;
     margin-bottom: 2rem;
     border-radius: .3rem;
-    background-image:  linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url(https://i.pinimg.com/originals/24/09/18/240918a2a614d8381902b13910b8625e.jpg);
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%), url(https://thenerdstash.com/wp-content/uploads/2022/08/FortniteKameHouse.jpeg);
     background-size: cover;
-    background-position:center;
+    background-position: bottom;
     /* background:transparent !important; */
-  }
-  .jumbotron h1{
+}
+
+.jumbotron h1 {
     color: #fff;
 }
 
-.jumbotron p{
+.jumbotron p {
     color: #fff;
 }
