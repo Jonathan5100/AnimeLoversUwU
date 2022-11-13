@@ -179,14 +179,6 @@ class Scatter {
             return
         }
 
-
-        d3.selectAll("circle").attr("opacity", d => {
-
-            console.log(d.data != null)
-
-            return 1
-        })
-
         d3.selectAll("circle").attr("opacity", d => {
 
             // if the intersection of genres is not empty
@@ -194,6 +186,16 @@ class Scatter {
 
             return 1
         })
+
+
+        const $select = document.querySelector('#genre_selector');
+        const $options = Array.from($select.options);
+        // get option that matches anime name
+        let optionToSelect = $options[1]
+            // set selector selection
+        $select.value = optionToSelect.value;
+        // let program know selector has been changed
+        $select.dispatchEvent(new Event('change'));
 
 
     }
