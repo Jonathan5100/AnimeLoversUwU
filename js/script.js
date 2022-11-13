@@ -3,6 +3,7 @@ anime_data = d3.csv("./data/crunchy.csv");
 Promise.all([anime_data]).then((data) => {
     const globalApplicationState = {
         selected_anime: null,
+        selected_genre: null,
         scatter: null,
         graph: null,
         pies: null,
@@ -77,7 +78,8 @@ Promise.all([anime_data]).then((data) => {
     })
 
     gSelector.on("change", function(d) {
-
+        let selectedOption = JSON.parse(d3.select(this).property("value"));
+        globalApplicationState.selected_genre = selectedOption;
         globalApplicationState.scatter.update();
     })
 
