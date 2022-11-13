@@ -51,5 +51,15 @@
     padding-top: 50px;
 }
 #info-text{
+    display: block;
     text-align:center;
+}
+.anime_text{
+    color: steelblue;
+}
+.genre_text{
+    color: maroon;
+}
+.hide{
+    display: none!important;
 }

@@ -59,40 +59,46 @@ class Pies {
        
         // this.drawPie(this.svg_anime, data_anime);
         
-        this.updateGenre();
         if(this.globalApplicationState.selected_anime === null)
             return;
-        let data_anime = this.getRatingsPerAnime(this.globalApplicationState.selected_anime);
-        let data_genre = this.getRatingsPerGenre(this.globalApplicationState.selected_genre);
+        this. data_anime = this.getRatingsPerAnime(this.globalApplicationState.selected_anime);
+        this.updateGenre();
+        
+            // + ' '
+            // + 
+            // + ' '
+            // + Math.round(data_anime[0].rate_count  * 100) / 100 
+            // + '% vs '
+            // + Math.round(data_genre[0].rate_count  * 100) / 100 
+            // +'%)'
+            // + ' When comparing one stars, "'
+            // + this.globalApplicationState.selected_anime.anime 
+            // + (data_anime[4].rate_count <= data_genre[4].rate_count ? '"has better' :  '"has worst')
+            // + ' then average percentage of 1 stars. ('
+            // + Math.round(data_anime[4].rate_count  * 100) / 100 
+            // + '% vs '
+            // + Math.round(data_genre[4].rate_count  * 100) / 100 
+            // +'%)'
+        this.drawWaffle(this.svg_anime, this.data_anime);
+    }
+    storyTelling(){
+        d3.select('#info-text').attr('class', '');
         d3.select("#anime_header").text('' + this.globalApplicationState.selected_anime.anime);
-        d3.select('#info-text').text(
-            'Compared to other animes in the '
-            + this.globalApplicationState.selected_genre.replaceAll('_', ' ') 
-            + ', "' 
-            + this.globalApplicationState.selected_anime.anime 
-            + '" has a '
-            + (data_anime[0].rate_count >= data_genre[0].rate_count ? 'better' :  'worst')
-            + ' then average  percentage of 5 stars. ('
-            + Math.round(data_anime[0].rate_count  * 100) / 100 
-            + '% vs '
-            + Math.round(data_genre[0].rate_count  * 100) / 100 
-            +'%)'
-            + ' When comparing one stars, "'
-            + this.globalApplicationState.selected_anime.anime 
-            + (data_anime[4].rate_count <= data_genre[4].rate_count ? '"has better' :  '"has worst')
-            + ' then average percentage of 1 stars. ('
-            + Math.round(data_anime[4].rate_count  * 100) / 100 
-            + '% vs '
-            + Math.round(data_genre[4].rate_count  * 100) / 100 
-            +'%)'
-        );
-        this.drawWaffle(this.svg_anime, data_anime);
+        d3.selectAll('.genre_name').text('' + this.globalApplicationState.selected_genre.replaceAll('_', ' '));
+        d3.selectAll('.anime_name').text(this.globalApplicationState.selected_anime.anime );
+        d3.select('#BW5').text((this.data_anime[0].rate_count >= this.data_genre[0].rate_count ? 'better' :  'worst'));
+        d3.select('#A5').text(Math.round(this.data_anime[0].rate_count  * 100) / 100 );
+        d3.select('#G5').text(Math.round(this.data_genre[0].rate_count  * 100) / 100 );
+        d3.select('#BW1').text((this.data_anime[4].rate_count <= this.data_genre[4].rate_count ? 'better' :  'worst'));
+        d3.select('#A1').text(Math.round(this.data_anime[4].rate_count  * 100) / 100);
+        d3.select('#G1').text(Math.round(this.data_genre[4].rate_count  * 100) / 100 );
     }
     updateGenre(){
-        let data_genre = this.getRatingsPerGenre(this.globalApplicationState.selected_genre);
+        this. data_genre = this.getRatingsPerGenre(this.globalApplicationState.selected_genre);
         d3.select("#genre_header").text('' + this.globalApplicationState.selected_genre.replaceAll('_', ' ') );
-      
-        this.drawWaffle(this.svg_genre, data_genre);
+        if(this.data_anime !== null)
+            this.storyTelling();
+        this.drawWaffle(this.svg_genre, this.data_genre);
         // this.drawPie(this.svg_genre, data_genre);
     }
     getRatingsPerAnime(anime){
