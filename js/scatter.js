@@ -182,7 +182,7 @@ class Scatter {
         d3.selectAll("circle").attr("opacity", d => {
 
             // if the intersection of genres is not empty
-            if (d.data != null && d.data[genresOfSelected] === "0.0") return 0.3
+            if (d.data != null && d.data[genresOfSelected] === "0.0") return 0.1
 
             return 1
         })
