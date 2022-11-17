@@ -15,7 +15,7 @@
 }
 
 .fixed-container {
-    width: 1800px;
+    width: 1400px;
 }
 
 .jumbotron {
@@ -69,7 +69,7 @@
     left: 0; */
     height: 95vh;
     /* z-index: 999; */
-    background: #7386D5;
+    background: lightcoral;
     color: #fff;
 }
 #content {

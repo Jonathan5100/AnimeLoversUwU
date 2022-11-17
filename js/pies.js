@@ -1,8 +1,8 @@
 //used this as help https://observablehq.com/@analyzer2004/waffle-chart 
 class Pies {
     radius = 300;
-    width = 600;
-    waffleSize = 55;
+    width = 450;
+    waffleSize = 40;
     padding= {x:0, y:0};
     colors = ['#ffd384','#94ebcd','#fbaccc','#d3e0ea','#fa7f72'];
     ratings = ["Five Star","Four Star","Three Star","Two Star","One Star"];
@@ -21,10 +21,10 @@ class Pies {
 
         let svg_key =  d3.select('#pie-chart-key-div').append('svg')
         .attr('width', this.width)
-        .attr('height', this.width/2 + 15)
+        .attr('height', 310)
         .attr('id', "pie-chart-key");
 
-        let offsetX = 175;
+        let offsetX = 115;
         this. ordScale = d3.scaleOrdinal()
         .domain(this.ratings)
         .range(this.colors);
@@ -185,7 +185,7 @@ class Pies {
         return `translate(${c * (this.waffleSize + this.padding.x)},${r * (this.waffleSize + this.padding.y)})`
         });
         g.selectAll('rect').remove();
-        let cellSize = 50;
+        let cellSize = this.waffleSize -5;
         let cells = g
           .selectAll('rect')
           .data(d => [d])
