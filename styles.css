@@ -67,12 +67,17 @@
     /* position: fixed; */
     /* top: 0;
     left: 0; */
-    height: 95vh;
+    height: 94.5vh;
+    overflow-y: auto;
+
     /* z-index: 999; */
     background: lightcoral;
     color: #fff;
 }
 #content {
-    height: 95vh;
+    height: 94.5vh;
     overflow-y: auto;
+}
+#sidebar > div > div > div {
+    margin-left: .75rem; margin-top: .75rem;
 }
