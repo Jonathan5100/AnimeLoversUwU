@@ -199,11 +199,14 @@ class Pies {
           .attr("width", cellSize).attr("height", cellSize) ;
     }
     waffleMyData(data){
+        data = this.forceTotal(data);
         let waffle = [];
         let x =0 ,y =0, index =0;
+
         for(let d of data){
             let i =0;
-            for(let i = 0; i < Math.round(d.rate_count); i++){
+            let num = d.rate_count;
+            for(let i = 0; i < num; i++){
                 waffle.push({x : x, y:y, stars:d.stars});
                 if (x === 9){
                     x = 0;
@@ -215,5 +218,25 @@ class Pies {
             index++;
         }
         return waffle;
+    }
+    forceTotal(data){
+        let max = {rate_count: -1};
+        let maxI = 0;
+        let I =0;
+        // let min = {rate_count: 101};
+        let total = 0;
+        for(let d of data){
+            d.rate_count = Math.ceil(d.rate_count);
+            if(max.rate_count > d.rate_count){
+                max = d;
+                maxI = I;
+            }
+            // if(min.rate_count < d.rate_count)
+            //     min = d;
+            total += d.rate_count;
+            I++;
+        }
+        data[maxI].rate_count =( data[maxI].rate_count + 100 - total);
+        return data;
     }
 }
