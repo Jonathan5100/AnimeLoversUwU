@@ -63,3 +63,16 @@
 .hide{
     display: none!important;
 }
+#sidebar {
+    /* position: fixed; */
+    /* top: 0;
+    left: 0; */
+    height: 95vh;
+    /* z-index: 999; */
+    background: #7386D5;
+    color: #fff;
+}
+#content {
+    height: 95vh;
+    overflow-y: auto;
+}

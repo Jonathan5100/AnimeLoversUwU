@@ -7,9 +7,12 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,700&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
     <link rel="stylesheet" href="styles.css" />
 </head>
@@ -22,110 +25,146 @@
                 <a class="nav-link" href="#scatter-row">Scatter</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#pie-row" >Waffle</a>
+                <a class="nav-link" href="#pie-row">Waffle</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#graph-row">Graph</a>
             </li>
         </ul>
-        <div class="nav-item">
-            <select id="anime_selector" class="form-select" style="width: 200px; float:left">
-                    <option selected>Pick an Anime</option>
-                </select>
-
-            <select id="genre_selector" class="form-select" style="width: 200px; float: right">
-                </select>
-        </div>
-
     </nav>
-    <div class="px-6 mx-5 mt-5 text-center" id="header-wrap">
-        <header>
-            <div class="jumbotron jumbotron-fluid">
-                <div class="container">
-                    <h1 class="display-4">Anime Lovers UWU</h1>
-                    <p class="lead">Amitoj Singh, Jonathan Rodriguez, John Huynh</p>
-
-                    <p class="card-text">Our goal was to empower users to have a new method to find new animes to watch. We hope to offer a unique sense of exploration when trying to find anime unlike any other simple list. Our goal is that through the bee-swarm chart and
-                        pie chart users will be able to find specific animes statistically similar to their favorite animes. Then through the graph we hope to have our users be able to explore new genres by seeing animes with significant overlap.</p>
-
+    <div class="">
+        <div class="row">
+            <div class="col-2" id="sidebar">
+                <div class="row">
+                    <select id="anime_selector" class="form-select" style="width: 200px; float:left">
+                        <option selected>Pick an Anime</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <select id="genre_selector" class="form-select" style="width: 200px; float: right">
+                    </select>
+                </div>
+                <div class="row">
+                    <img id="anime_image"
+                    src="https://img1.ak.crunchyroll.com/i/spire4/1c1df98707aa0f22aa54342af725e48a1491245343_full.jpg"
+                    class="rounded  img-fluid  w-1 anime-image" alt="N">
                 </div>
             </div>
-    </div>
-    </header>
-    </div>
+            <div class="col-10" id="content">
 
-    <div class="container-fluid fixed-container">
-        <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" class="scrollspy-example" tabindex="0">
-            <div class="row">
-                <div id="" class="col-12 fixed-full m-2">
+                <div class=" text-center" id="header-wrap">
+                    <header>
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <h1 class="display-4">Anime Lovers UWU</h1>
+                                <p class="lead">Amitoj Singh, Jonathan Rodriguez, John Huynh</p>
 
+                                <p class="card-text">Our goal was to empower users to have a new method to find new
+                                    animes to watch.
+                                    We hope to offer a unique sense of exploration when trying to find anime unlike any
+                                    other simple
+                                    list. Our goal is that through the bee-swarm chart and
+                                    pie chart users will be able to find specific animes statistically similar to their
+                                    favorite
+                                    animes. Then through the graph we hope to have our users be able to explore new
+                                    genres by seeing
+                                    animes with significant overlap.</p>
 
-                </div>
-            </div>
-            <div class="row mt-1 list-item-1" id="scatter-row">
-                <div class="col-2 mt-5">
-                    <p class="lead">The first is plot is quite simple. It is supposed to be a scatter, beeswarm, plot that plots the ratings of various animes. The size of nodes represents the number of episodes, the color represents the number of votes, and position
-                        represents the rating of anime. Interactibility between the nodes in the plot and the pie chart makes it so that a selection in the plot chart highlights the genres in the pie chart. The pie chart highlights an anime with genres,
-                        from there we see the average ratings in a genre, and the distribution of ratings for the selected anime.
-                    </p>
-                </div>
-                <div id="image-div m-3" class="col-2">
-                    <br>
-                    <br>
-
-                    <img id="anime_image" src="https://img1.ak.crunchyroll.com/i/spire4/1c1df98707aa0f22aa54342af725e48a1491245343_full.jpg" class="rounded  img-fluid  w-1 anime-image" alt="N">
-
-                </div>
-                <div id="plot-chart-div" class="col-8">
-                </div>
-            </div>
-            <div class="row border-bottom list-item-2" id="pie-row">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-4 mb-5">
-                            <h1 id="genre_header"class="pieHeaders genre_text"> Select an Genre To Begin</h1>
+                            </div>
                         </div>
-                        <div class="col-4 mb-5">
-                            <h1 class="pieHeaders">Information</h1>
+                </div>
+                </header>
+
+
+                <div class="container-fluid fixed-container">
+                    <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0"
+                        class="scrollspy-example" tabindex="0">
+                        <div class="row">
+                            <div id="" class="col-12 fixed-full m-2">
+
+
+                            </div>
                         </div>
-                        <div class="col-4 mb-5">
-                            <h1 id="anime_header" class="pieHeaders anime_text"> Select an Anime To Begin</h1>
+                        <div class="row mt-1 list-item-1" id="scatter-row">
+                            <div class="col-2 mt-5">
+                                <p class="lead">The first is plot is quite simple. It is supposed to be a scatter,
+                                    beeswarm, plot that plots the ratings of various animes. The size of nodes
+                                    represents the number of episodes, the color represents the number of votes, and
+                                    position
+                                    represents the rating of anime. Interactibility between the nodes in the plot and
+                                    the pie chart makes it so that a selection in the plot chart highlights the genres
+                                    in the pie chart. The pie chart highlights an anime with genres,
+                                    from there we see the average ratings in a genre, and the distribution of ratings
+                                    for the selected anime.
+                                </p>
+                            </div>
+                           
+                            <div id="plot-chart-div" class="col-8">
+                            </div>
+                        </div>
+                        <div class="row border-bottom list-item-2" id="pie-row">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-4 mb-5">
+                                        <h1 id="genre_header" class="pieHeaders genre_text"> Select an Genre To Begin
+                                        </h1>
+                                    </div>
+                                    <div class="col-4 mb-5">
+                                        <h1 class="pieHeaders">Information</h1>
+                                    </div>
+                                    <div class="col-4 mb-5">
+                                        <h1 id="anime_header" class="pieHeaders anime_text"> Select an Anime To Begin
+                                        </h1>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div id="pie-chart-genre-div" class="col-4 mb-5"></div>
+                                    <div id="pie-chart-key-div" class="col-4 mb-5">
+                                        <span id="info-text" class="hide">
+                                            Compared to other animes in the
+                                            <span class="genre_text genre_name"></span>
+                                            , "<span class="anime_text anime_name"></span>" has a
+                                            <b id="BW5"></b>
+                                            then average percentage of 5 stars. (<span id="G5"
+                                                class="genre_text"></span><span class="genre_text">%</span>
+                                            vs
+                                            <span id="A5" class="anime_text"></span><span class="anime_text">%</span>).
+                                            When comparing one stars, "<span class="anime_text anime_name"></span>" has
+                                            a
+                                            <b id="BW1"></b>
+                                            than average percentage. (<span id="G1" class="genre_text"></span><span
+                                                class="genre_text">%</span>
+                                            vs
+                                            <span id="A1" class="anime_text"></span><span class="anime_text">%</span>).
+                                        </span>
+                                        <br>
+                                    </div>
+                                    <div id="pie-chart-anime-div" class="col-4 mb-5"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row border-bottom list-item-3" id="graph-row">
+
+                            <div id="graph-div" class="col-12">
+
+                            </div>
+                            <p class="lead m-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                                aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                                deserunt mollit anim id est laborum.
+                            </p>
+
                         </div>
                     </div>
-                    <div class="row">
-                        <div id="pie-chart-genre-div" class="col-4 mb-5"></div>
-                        <div id="pie-chart-key-div" class="col-4 mb-5">
-                            <span id="info-text" class="hide">
-                                Compared to other animes in the 
-                                <span class="genre_text genre_name"></span>
-                                , "<span class="anime_text anime_name"></span>" has a 
-                                <b id="BW5"></b> 
-                                then average percentage of 5 stars. (<span id="G5"class="genre_text"></span><span class="genre_text">%</span>
-                                vs
-                                <span id="A5" class="anime_text"></span><span class="anime_text">%</span>). When comparing one stars, "<span class="anime_text anime_name"></span>" has a 
-                                <b id="BW1"></b> 
-                                than average percentage. (<span id="G1"class="genre_text"></span><span class="genre_text">%</span>
-                                vs
-                                <span id="A1" class="anime_text"></span><span class="anime_text">%</span>).
-                            </span>
-                            <br>
-                        </div>
-                        <div id="pie-chart-anime-div" class="col-4 mb-5"></div>
-                    </div>
                 </div>
             </div>
-            <div class="row border-bottom list-item-3" id="graph-row">
 
-                <div id="graph-div" class="col-12">
-
-                </div>
-                <p class="lead m-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-                    aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-
-            </div>
         </div>
     </div>
+    </div>
+
     <script>
     </script>
     <script src="js/script.js"></script>
