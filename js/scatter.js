@@ -3,7 +3,7 @@ class Scatter {
 
         this.globalApplicationState = globalApplicationState;
         this.au = new Anime_Utils()
-        this.margin = { top: 5, right: 50, bottom: 100, left: 60 }
+        this.margin = { top: 10, right: 50, bottom: 200, left: 60 }
 
         // set up svg
         this.width = 1300 - this.margin.left - this.margin.right;
@@ -22,10 +22,10 @@ class Scatter {
             .domain([1, 5])
             .range([30, this.width - 30]);
 
-        let votes = d3.extent(this.globalApplicationState.anime_data
+        this.votes = d3.extent(this.globalApplicationState.anime_data
             .map((d) => +d.votes));
         this.color = d3.scaleLinear()
-            .domain([votes[0], votes[1] / 200, votes[1]])
+            .domain([this.votes[0], this.votes[1] / 200, this.votes[1]])
             .range(["#F0F2FF", "#6699FF", "#000000"])
 
         // get the total episodes
@@ -33,12 +33,13 @@ class Scatter {
             .map((d) => +d.episodes));
 
         // log scale for 2D plot
-        this.y = d3.scaleLog().domain([1, 2000]).range([this.height, 0]);
+        this.y = d3.scaleLog().domain([1, 1150]).range([this.height - 20, 0]);
 
         // base size of of episode sizes
         this.size = d3.scaleSqrt().domain(totals).range([3, 35]);
 
         this.drawInitial();
+        this.legend()
 
     }
 
@@ -60,7 +61,7 @@ class Scatter {
             .style("font-size", "28px")
             .attr("font-weight", "bold")
             .attr("x", this.width / 2 + this.margin.left + this.margin.right)
-            .attr("y", this.height + this.margin.top + 50)
+            .attr("y", this.height + 50)
             .text("Anime Ratings");
 
         this.svg.append("text")
@@ -344,5 +345,57 @@ class Scatter {
             //change fill and stroke opacity to avoid CSS conflicts
             .attr("fill-opacity", 0)
             .attr("stroke-opacity", 0).remove();
+    }
+
+
+    legend() {
+        //Append a defs (for definition) element to your SVG
+        var defs = d3.select(".scatter").append("defs");
+
+        //Append a linearGradient element to the defs and give it a unique id
+        var linearGradient = defs.append("linearGradient")
+            .attr("id", "linear-gradient");
+
+        //Horizontal gradient
+        linearGradient
+            .attr("x1", "0%")
+            .attr("y1", "0%")
+            .attr("x2", "100%")
+            .attr("y2", "0%");
+
+        linearGradient.selectAll("stop")
+            .data(this.color.range())
+            .enter().append("stop")
+            .attr("offset", function(d, i) { return i / 2; })
+            .attr("stop-color", function(d) { return d; });
+
+        let y = this.height + 130;
+        let x = this.width - 250;
+        //Draw the rectangle and fill with gradient
+        d3.select(".scatter").append("svg")
+            .attr("class", "legendSvg")
+            .attr("height", 2000)
+            .append("rect")
+            .attr("class", "legend")
+            .attr("width", 300)
+            .attr("height", 20)
+            .attr("x", x)
+            .attr("y", y)
+            .style("fill", "url(#linear-gradient)")
+
+        d3.select(".legendSvg").append("text")
+            .style("font-size", "11x")
+            .attr("x", x)
+            .attr("y", y - 6)
+            .text(this.votes[0] + " votes");
+
+        d3.select(".legendSvg").append("text")
+            .style("font-size", "11x")
+            .attr("x", x + 220)
+            .attr("y", y - 6)
+            .text(this.votes[1] + " votes");
+
+
+
     }
 }
