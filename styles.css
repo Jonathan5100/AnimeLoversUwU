@@ -35,49 +35,67 @@
 .jumbotron p {
     color: #fff;
 }
-#pie-row{
+
+#pie-row {
     background-color: lightgoldenrodyellow;
 }
-.pieHeaders{
-    text-align:center;
+
+.pieHeaders {
+    text-align: center;
 }
-.pieSvg{
+
+.pieSvg {
     display: block;
     /* margin: auto; */
     margin-left: 20px;
-    text-align:center;
+    text-align: center;
 }
-#pie-row{
+
+#pie-row {
     padding-top: 50px;
 }
-#info-text{
+
+#info-text {
     display: block;
-    text-align:center;
+    text-align: center;
 }
-.anime_text{
+
+.anime_text {
     color: steelblue;
 }
-.genre_text{
+
+.genre_text {
     color: maroon;
 }
-.hide{
+
+.hide {
     display: none!important;
 }
+
 #sidebar {
     /* position: fixed; */
     /* top: 0;
     left: 0; */
     height: 94.5vh;
     overflow-y: auto;
-
     /* z-index: 999; */
     background: lightcoral;
     color: #fff;
 }
+
 #content {
     height: 94.5vh;
     overflow-y: auto;
 }
-#sidebar > div > div > div {
-    margin-left: .75rem; margin-top: .75rem;
+
+#sidebar>div>div>div {
+    margin-left: .75rem;
+    margin-top: .75rem;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    background: white;
+    pointer-events: none;
 }

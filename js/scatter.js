@@ -261,8 +261,19 @@ class Scatter {
             $select.dispatchEvent(new Event('change'));
         };
 
+        // Define the div for the tooltip - https://bl.ocks.org/d3noob/97e51c5be17291f79a27705cef827da2
+        let div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0)
+            .style("pointer-events", "none")
+            .style("border", "solid")
+            .style("border-width", "2px")
+            .style("border-radius", "5px")
+            .style("padding", "5px")
+            .style("opacity", 1)
+
         // add circles
-        this.svg.append("g")
+        let circles = this.svg.append("g")
             .selectAll("circle")
             .data(dodge(this.globalApplicationState.anime_data))
             .join("circle")
@@ -272,8 +283,22 @@ class Scatter {
             .attr("cy", d => d.y + 130)
             .attr("r", d => d.r)
             .on("click", click)
-            .append("title")
-            .text(d => d.data.anime);
+            .on("mouseover", function(event, d) {
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html("<h3>" + d.data.anime + "</h3>\n<h5>Rating for selected: " + d.data.rate +
+                        "</h5>\n<h5>Number of votes: " + d.data.votes +
+                        "</h5>\n<h5>Number of episodes: " + (d.data.episodes > 0 ? d.data.episodes : 1) + "</h5>\n")
+                    .style("left", (event.pageX) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", function(d) {
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            })
+
     }
 
     // draws initial 1D graph 
