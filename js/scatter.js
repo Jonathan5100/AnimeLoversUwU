@@ -111,7 +111,16 @@ class Scatter {
 
         // get genre of selected animes
         let genresOfSelected = JSON.parse(d3.select("#genre_selector").property("value"));
-        let animesWithSelected = this.au.getAllInGenres(this.globalApplicationState.anime_data, genresOfSelected)
+        let selectedAnime = JSON.parse(d3.select("#anime_selector").property("value"));
+
+        // highlight selected and unselect all else
+        d3.selectAll(".circ")
+            .attr("stroke", (d) => {
+                return (d.data.anime == selectedAnime.anime) ? "#CC5500" : "black"
+            })
+            .attr("stroke-width", (d) => {
+                return (d.data.anime == selectedAnime.anime) ? 4 : 1
+            })
 
         // check that this has any genres
         if (genresOfSelected.length == 29) {
@@ -234,7 +243,7 @@ class Scatter {
 
         // click event added to all circles
         //https://alvarotrigo.com/blog/javascript-select-option/
-        let click = (event, d) => {
+        let click = function(event, d) {
 
             // correct image
             d3.select("#anime_image")
@@ -243,6 +252,7 @@ class Scatter {
             // get selector of animes
             const $select = document.querySelector('#anime_selector');
             const $options = Array.from($select.options);
+
             // get option that matches anime name
             let optionToSelect = null;
             for (let i = 0; i < $options.length; i++) {
@@ -278,6 +288,7 @@ class Scatter {
             .selectAll("circle")
             .data(dodge(this.globalApplicationState.anime_data))
             .join("circle")
+            .attr("class", "circ")
             .attr("stroke", "black")
             .attr("fill", d => this.color(+d.data.votes))
             .attr("cx", d => d.x)
@@ -288,10 +299,10 @@ class Scatter {
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-                div.html("<h3>" + d.data.anime + "</h3>\n<h5>Rating for selected: " + d.data.rate +
+                div.html("<h3>" + d.data.anime + "</h3>\n<h5>Rating: " + d.data.rate +
                         "</h5>\n<h5>Number of votes: " + d.data.votes +
                         "</h5>\n<h5>Number of episodes: " + (d.data.episodes > 0 ? d.data.episodes : 1) + "</h5>\n")
-                    .style("left", (event.pageX) + "px")
+                    .style("left", (event.pageX + 20) + "px")
                     .style("top", (event.pageY - 28) + "px");
             })
             .on("mouseout", function(d) {
@@ -311,7 +322,7 @@ class Scatter {
     // draws 1D graph 
     draw1D() {
 
-        this.remove(".axis2D")
+        this.removeAll(".axis2D")
         this.DrawAxis1D();
         this.DrawCircle1D();
     }
@@ -319,7 +330,7 @@ class Scatter {
     // draws 2D graph
     draw2D() {
 
-        this.remove(".axis1D")
+        this.removeAll(".axis1D")
         this.DrawAxis2D();
         this.DrawCircle2D();
     }
@@ -336,7 +347,8 @@ class Scatter {
         }
     }
 
-    remove(str) {
+    // remove all of given selector string
+    removeAll(str) {
         d3.selectAll(str)
             .attr("fill-opacity", 1)
             .attr("stroke-opacity", 1)
@@ -371,6 +383,7 @@ class Scatter {
 
         let y = this.height + 130;
         let x = this.width - 250;
+
         //Draw the rectangle and fill with gradient
         d3.select(".scatter").append("svg")
             .attr("class", "legendSvg")
@@ -383,14 +396,17 @@ class Scatter {
             .attr("y", y)
             .style("fill", "url(#linear-gradient)")
 
+        // label for the gradients
         d3.select(".legendSvg").append("text")
             .style("font-size", "11x")
+            .attr("font-weight", "bold")
             .attr("x", x)
             .attr("y", y - 6)
             .text(this.votes[0] + " votes");
 
         d3.select(".legendSvg").append("text")
             .style("font-size", "11x")
+            .attr("font-weight", "bold")
             .attr("x", x + 220)
             .attr("y", y - 6)
             .text(this.votes[1] + " votes");
