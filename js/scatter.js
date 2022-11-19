@@ -3,7 +3,7 @@ class Scatter {
 
         this.globalApplicationState = globalApplicationState;
         this.au = new Anime_Utils()
-        this.margin = { top: 10, right: 50, bottom: 100, left: 50 }
+        this.margin = { top: 5, right: 50, bottom: 100, left: 60 }
 
         // set up svg
         this.width = 1300 - this.margin.left - this.margin.right;
@@ -38,16 +38,16 @@ class Scatter {
         // base size of of episode sizes
         this.size = d3.scaleSqrt().domain(totals).range([3, 35]);
 
-        this.DrawAxis1D();
-        this.DrawCircle1D();
+        this.drawInitial();
 
     }
 
-    // draws single x-axis
+    // draws  x and y-axis
     DrawAxis2D() {
 
-        // tick marks
+        // x axis
         this.svg.append("g")
+            .attr("class", "axis2D")
             .attr("transform", "translate(0," + 85 + ")")
             .call(d3.axisBottom(this.x).ticks(10))
             .attr("transform", "translate(0," + (this.height + 10) + ")")
@@ -55,72 +55,41 @@ class Scatter {
 
         // axis labels
         this.svg.append("text")
+            .attr("class", "axis2D")
             .attr("text-anchor", "end")
-            .style("font-size", "24px")
-            .attr("x", this.width / 2 + this.margin.left)
-            .attr("y", this.height + this.margin.top + 40)
+            .style("font-size", "28px")
+            .attr("font-weight", "bold")
+            .attr("x", this.width / 2 + this.margin.left + this.margin.right)
+            .attr("y", this.height + this.margin.top + 50)
             .text("Anime Ratings");
 
         this.svg.append("text")
+            .attr("class", "axis2D")
             .attr("text-anchor", "end")
-            .style("font-size", "24px")
+            .style("font-size", "28px")
+            .attr("font-weight", "bold")
             .attr("transform", "rotate(-90)")
-            .attr("y", -this.margin.left + 20)
+            .attr("y", -this.margin.left + 23)
             .attr("x", -this.height / 2 + 0)
             .text("Episode Count")
 
-
+        // y axis
         this.svg.append("g")
+            .attr("class", "axis2D")
             .call(d3.axisLeft(this.y))
             .call(g => g.select(".domain").remove())
 
+
     }
 
-    // draws all circles in graph
+    // rearranges circle for 2D graph
     DrawCircle2D() {
-        let dodge = (data) => {
-            const circles = data.map(d => ({ x: this.x(+d.rate), r: 5, data: d })).sort((a, b) => b.r - a.r);
-            return circles;
-        }
 
-        // click event added to all circles
-        //https://alvarotrigo.com/blog/javascript-select-option/
-        let click = (event, d) => {
-
-            // correct image
-            d3.select("#anime_image")
-                .attr("src", d.data.anime_img)
-
-            // get selector of animes
-            const $select = document.querySelector('#anime_selector');
-            const $options = Array.from($select.options);
-            // get option that matches anime name
-            let optionToSelect = null;
-            for (let i = 0; i < $options.length; i++) {
-
-                if ($options[i].text === d.data.anime) {
-                    optionToSelect = $options[i]
-                    break;
-                }
-            }
-
-            if (optionToSelect == null) {
-
-                optionToSelect = $options[3]
-            }
-            // set selector selection
-            $select.value = optionToSelect.value;
-            // let program know selector has been changed
-            $select.dispatchEvent(new Event('change'));
-        };
-
-        // add circles
-        this.svg.append("g")
+        // move circles
+        this.svg
+            .transition()
+            .duration(800)
             .selectAll("circle")
-            .data(dodge(this.globalApplicationState.anime_data))
-            .join("circle")
-            .attr("stroke", "black")
-            .attr("fill", d => this.color(+d.data.votes))
             .attr("cx", d => d.x)
             .attr("cy", d => {
                 let temp = +d.data.episodes;
@@ -130,10 +99,7 @@ class Scatter {
 
                 return this.y(1);
             })
-            .attr("r", d => d.r)
-            .on("click", click)
-            .append("title")
-            .text(d => d.data.anime)
+            .attr("r", 5)
 
     }
 
@@ -169,12 +135,14 @@ class Scatter {
 
         // tick marks
         this.svg.append("g")
+            .attr("class", "axis1D")
             .attr("transform", "translate(0," + 85 + ")")
-            .call(d3.axisBottom(this.x).ticks(10))
+            .call(d3.axisBottom(this.x))
             .call(g => g.select(".domain").remove())
 
         // axis labels
         this.svg.append("g")
+            .attr("class", "axis1D")
             .append("text")
             .attr("x", 10)
             .attr("y", 70)
@@ -182,6 +150,7 @@ class Scatter {
             .text("Low Rated Animes");
 
         this.svg.append("g")
+            .attr("class", "axis1D")
             .append("text")
             .style("font-size", "34px")
             .attr("text-anchor", "end")
@@ -191,6 +160,7 @@ class Scatter {
             .text("Anime Ratings");
 
         this.svg.append("g")
+            .attr("class", "axis1D")
             .append("text")
             .attr("text-anchor", "end")
             .attr("x", this.width - 20)
@@ -201,6 +171,20 @@ class Scatter {
 
     // draws all circles in graph
     DrawCircle1D() {
+
+        // add circles
+        this.svg
+            .selectAll("circle")
+            .transition()
+            .duration(800)
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y + 130)
+            .attr("r", d => d.r);
+    }
+
+
+    // draws all circles in graph
+    DrawInitialCircles() {
 
         // https://observablehq.com/@tomwhite/beeswarm-bubbles
         let dodge = (data) => {
@@ -292,16 +276,24 @@ class Scatter {
             .text(d => d.data.anime);
     }
 
+    // draws initial 1D graph 
+    drawInitial() {
+        this.DrawAxis1D();
+        this.DrawInitialCircles();
+    }
+
     // draws 1D graph 
     draw1D() {
-        this.svg.selectAll("*").remove();
+
+        this.remove(".axis2D")
         this.DrawAxis1D();
         this.DrawCircle1D();
     }
 
     // draws 2D graph
     draw2D() {
-        this.svg.selectAll("*").remove();
+
+        this.remove(".axis1D")
         this.DrawAxis2D();
         this.DrawCircle2D();
     }
@@ -316,5 +308,16 @@ class Scatter {
             d3.select("#myCheckboxLabel").text("2D Plot")
             this.draw1D()
         }
+    }
+
+    remove(str) {
+        d3.selectAll(str)
+            .attr("fill-opacity", 1)
+            .attr("stroke-opacity", 1)
+            .transition()
+            .duration(400)
+            //change fill and stroke opacity to avoid CSS conflicts
+            .attr("fill-opacity", 0)
+            .attr("stroke-opacity", 0).remove();
     }
 }
