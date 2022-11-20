@@ -31,6 +31,7 @@ Promise.all([anime_data]).then((data) => {
     // get both selector forms, genre and anime 
     let animeSelector = d3.select("#anime_selector");
     let genreSelector = d3.select("#genre_selector");
+    anime_data.push(anime_data[0])
 
     // give anime selector animes
     animeSelector.selectAll('option').data(anime_data)
