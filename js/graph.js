@@ -37,7 +37,7 @@ class Graph {
                 }
             }
         }
-        debugger
+
         let svg = graph.append("svg")
             .attr('width', svgWidth)
             .attr('height', svgHeight);
@@ -55,7 +55,7 @@ class Graph {
             .enter()
             .append("line")
             .style("stroke", "#aaa")
-        // Now we create the node group, and the nodes inside it
+            // Now we create the node group, and the nodes inside it
         let nodeLayer = svg.append("g")
             .attr("class", "nodes");
         // Initialize the nodes
@@ -66,8 +66,8 @@ class Graph {
             .append("circle")
             .attr("r", 20)
             .style("fill", "#69b3a2")
-        // We can add a tooltip to each node, so when you hover over a circle, you 
-        //  see the node's id
+            // We can add a tooltip to each node, so when you hover over a circle, you 
+            //  see the node's id
         nodes.append("title")
             .text(d => d.name);
 
@@ -77,7 +77,7 @@ class Graph {
             .data(genresNodes)
             .enter().append("text")
             .attr("class", "label")
-            .text(function (d) {
+            .text(function(d) {
                 let formatteGenre = d.name.replace("genre_", "");
                 return formatteGenre.charAt(0).toUpperCase() + formatteGenre.slice(1);
             });
@@ -86,7 +86,7 @@ class Graph {
         // Let's list the force we wanna apply on the network
         var simulation = d3.forceSimulation(genresNodes) // Force algorithm is applied to data.nodes
             .force("link", d3.forceLink() // This force provides links between nodes
-                .id(function (d) { return d.id; }) // This provide  the id of a node
+                .id(function(d) { return d.id; }) // This provide  the id of a node
                 .links(animeLinks) // and this the list of links
             )
             .force("charge", d3.forceManyBody().strength(-1000)) // This adds repulsion between nodes. Play with the -400 for the repulsion strength
@@ -96,17 +96,17 @@ class Graph {
         // This function is run at each iteration of the force algorithm, updating the nodes position.
         function ticked() {
             links
-                .attr("x1", function (d) { return d.source.x; })
-                .attr("y1", function (d) { return d.source.y; })
-                .attr("x2", function (d) { return d.target.x; })
-                .attr("y2", function (d) { return d.target.y; });
+                .attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
 
             nodes
-                .attr("cx", function (d) { return d.x; })
-                .attr("cy", function (d) { return d.y; });
+                .attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; });
             labels
-                .attr("x", function (d) { return d.x; })
-                .attr("y", function (d) { return d.y; })
+                .attr("x", function(d) { return d.x; })
+                .attr("y", function(d) { return d.y; })
                 .style("font-size", "20px").style("fill", "white");
         }
 

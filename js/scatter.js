@@ -3,7 +3,7 @@ class Scatter {
 
         this.globalApplicationState = globalApplicationState;
         this.au = new Anime_Utils()
-        this.margin = { top: 10, right: 50, bottom: 200, left: 60 }
+        this.margin = { top: 10, right: 50, bottom: 190, left: 60 }
 
         // set up svg
         this.width = 1300 - this.margin.left - this.margin.right;
@@ -29,14 +29,14 @@ class Scatter {
             .range(["#F0F2FF", "#6699FF", "#000000"])
 
         // get the total episodes
-        let totals = d3.extent(this.globalApplicationState.anime_data
+        this.totals = d3.extent(this.globalApplicationState.anime_data
             .map((d) => +d.episodes));
 
         // log scale for 2D plot
-        this.y = d3.scaleLog().domain([1, 1150]).range([this.height - 20, 0]);
+        this.y = d3.scaleLog().domain([1, 1150]).range([this.height - 20, 0])
 
         // base size of of episode sizes
-        this.size = d3.scaleSqrt().domain(totals).range([3, 35]);
+        this.size = d3.scaleSqrt().domain(this.totals).range([3, 35]);
 
         this.drawInitial();
         this.legend()
@@ -51,6 +51,7 @@ class Scatter {
             .attr("class", "axis2D")
             .attr("transform", "translate(0," + 85 + ")")
             .call(d3.axisBottom(this.x).ticks(10))
+            .style("font-size", "12px")
             .attr("transform", "translate(0," + (this.height + 10) + ")")
             .call(g => g.select(".domain").remove())
 
@@ -61,7 +62,7 @@ class Scatter {
             .style("font-size", "28px")
             .attr("font-weight", "bold")
             .attr("x", this.width / 2 + this.margin.left + this.margin.right)
-            .attr("y", this.height + 50)
+            .attr("y", this.height + 55)
             .text("Anime Ratings");
 
         this.svg.append("text")
@@ -77,7 +78,8 @@ class Scatter {
         // y axis
         this.svg.append("g")
             .attr("class", "axis2D")
-            .call(d3.axisLeft(this.y))
+            .call(d3.axisLeft(this.y).ticks(50))
+            .style("font-size", "12px")
             .call(g => g.select(".domain").remove())
 
 
@@ -146,8 +148,9 @@ class Scatter {
         // tick marks
         this.svg.append("g")
             .attr("class", "axis1D")
-            .attr("transform", "translate(0," + 85 + ")")
+            .attr("transform", "translate(0," + 40 + ")")
             .call(d3.axisBottom(this.x))
+            .style("font-size", "12px")
             .call(g => g.select(".domain").remove())
 
         // axis labels
@@ -155,7 +158,7 @@ class Scatter {
             .attr("class", "axis1D")
             .append("text")
             .attr("x", 10)
-            .attr("y", 70)
+            .attr("y", 15)
             .attr("font-weight", "bold")
             .text("Low Rated Animes");
 
@@ -165,7 +168,7 @@ class Scatter {
             .style("font-size", "34px")
             .attr("text-anchor", "end")
             .attr("x", this.width / 2 + 110)
-            .attr("y", 70)
+            .attr("y", 15)
             .attr("font-weight", "bold")
             .text("Anime Ratings");
 
@@ -174,7 +177,7 @@ class Scatter {
             .append("text")
             .attr("text-anchor", "end")
             .attr("x", this.width - 20)
-            .attr("y", 70)
+            .attr("y", 15)
             .attr("font-weight", "bold")
             .text("High Rated Animes");
     }
@@ -188,7 +191,7 @@ class Scatter {
             .transition()
             .duration(800)
             .attr("cx", d => d.x)
-            .attr("cy", d => d.y + 130)
+            .attr("cy", d => d.y + 70)
             .attr("r", d => d.r);
     }
 
@@ -292,7 +295,7 @@ class Scatter {
             .attr("stroke", "black")
             .attr("fill", d => this.color(+d.data.votes))
             .attr("cx", d => d.x)
-            .attr("cy", d => d.y + 130)
+            .attr("cy", d => d.y + 70)
             .attr("r", d => d.r)
             .on("click", click)
             .on("mouseover", function(event, d) {
@@ -300,8 +303,8 @@ class Scatter {
                     .duration(200)
                     .style("opacity", .9);
                 div.html("<h3>" + d.data.anime + "</h3>\n<h5>Rating: " + d.data.rate +
-                        "</h5>\n<h5>Number of votes: " + d.data.votes +
-                        "</h5>\n<h5>Number of episodes: " + (d.data.episodes > 0 ? d.data.episodes : 1) + "</h5>\n")
+                        "</h5>\n<h5>Votes: " + d.data.votes +
+                        "</h5>\n<h5>Episodes: " + (d.data.episodes > 0 ? d.data.episodes : 1) + "</h5>\n")
                     .style("left", (event.pageX + 20) + "px")
                     .style("top", (event.pageY - 28) + "px");
             })
@@ -410,8 +413,6 @@ class Scatter {
             .attr("x", x + 220)
             .attr("y", y - 6)
             .text(this.votes[1] + " votes");
-
-
 
     }
 }
