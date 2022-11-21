@@ -4,7 +4,7 @@ class Pies {
     width = 450;
     waffleSize = 40;
     padding= {x:0, y:0};
-    colors = ['#ffd384','#94ebcd','#fbaccc','#d3e0ea','#fa7f72'];
+    colors = ['#ffd384','#94ebcd','#fbaccc','#6dd6c8','#fa7f72'];
     ratings = ["Five Star","Four Star","Three Star","Two Star","One Star"];
     constructor(globalApplicationState){
         this.globalApplicationState = globalApplicationState;
@@ -19,41 +19,56 @@ class Pies {
         .attr('height', this.width)
         .attr('id', "pie-chart-anime");
 
-        let svg_key =  d3.select('#pie-chart-key-div').append('svg')
+        this. svg_key =  d3.select('#pie-chart-key-div').append('svg')
         .attr('width', this.width)
         .attr('height', 310)
         .attr('id', "pie-chart-key");
+        this. offsetX = 115;
 
-        let offsetX = 115;
-        this. ordScale = d3.scaleOrdinal()
-        .domain(this.ratings)
-        .range(this.colors);
-        svg_key.append('text')
+        this.hoveredOn = null;
+        this.svg_key.append('text')
         .text("Key")
         .attr("fill", "black")
-        .attr('x', 70 + offsetX)
+        .attr('x', 70 + this.offsetX)
         .attr('y', 25)
         .style("font-size", "34px")
         .attr("font-weight", "bold");
-        svg_key.selectAll('rect')
+
+
+        
+
+        this.drawKey();
+        this.svg_key.selectAll('.keyText')
+        .data(this.ratings)
+        .join('text')
+        .text(d=> d)
+        .attr("fill", "black")
+        .attr('x', 70 + this.offsetX)
+        .attr('y', (d,i) => i * 55 + 65)
+        .attr("rx", 3).attr("ry", 3);
+    }
+    drawKey(){
+
+        this.ordScale = d3.scaleOrdinal()
+        .domain(this.ratings)
+        .range(this.colors);
+        
+        this.svg_key.selectAll('rect')
         .data(this.ratings)
         .join('rect')
         .text(d=> d)
-        .attr("fill", d => this.ordScale(d))
-        .attr('x', 50 + offsetX)
+        .attr("fill", d => {
+            console.log(d, this.hoveredOn);
+            if(this.hoveredOn === null || this.hoveredOn === d)
+                return this.ordScale(d);
+            return 'lightgrey';
+        })
+        .attr('x', 50 + this.offsetX)
         .attr('y', (d,i) => i * 55 + 35)
         .attr("rx", 3).attr("ry", 3)
         .attr("width", 100)
         .attr("height", 50) ;
 
-        svg_key.selectAll('.keyText')
-        .data(this.ratings)
-        .join('text')
-        .text(d=> d)
-        .attr("fill", "black")
-        .attr('x', 70 + offsetX)
-        .attr('y', (d,i) => i * 55 + 65)
-        .attr("rx", 3).attr("ry", 3);
     }
     update() {
        
@@ -251,6 +266,7 @@ class Pies {
         let c = i - r * 10;
         let x = c * (this.waffleSize + this.padding.x); 
         let y = r * (this.waffleSize + this.padding.y);
+        this.hoveredOn = data.stars;
         d3.select("#genre-tooltip")
         .attr('style',
             "left: " + (x + 65) + "px; top : " + (y -20 )+ "px; visibility: visible")
@@ -266,6 +282,8 @@ class Pies {
         d3.select("#anime-tooltip-header").text('' + this.globalApplicationState.selected_anime.anime.replaceAll('_', ' '));
         d3.select("#anime-tooltip-top").text("Number of Votes: " + ani.total);
         d3.select("#anime-tooltip-bottom").text("Percentage of Votes: " + ani.rate_count.toFixed(3) + "%");
+
+        this.drawKey();
     }
     updateHoverOff(event, data){
         d3.select("#genre-tooltip")
@@ -274,5 +292,8 @@ class Pies {
             d3.select("#anime-tooltip")
             .attr('style',
                 "left: " + 0 + "px; top : " + 0+ "px; visibility: hidden")
+        this.hoveredOn = null;
+
+        this.drawKey();
     }
 }
