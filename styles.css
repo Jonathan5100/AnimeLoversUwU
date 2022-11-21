@@ -99,3 +99,27 @@ div.tooltip {
     background: white;
     pointer-events: none;
 }
+
+/* Tooltip container from https://www.w3schools.com/css/css_tooltip.asp */ 
+.tooltip-custom {
+    position: relative;
+    display: inline-block;
+
+  }
+  
+  /* Tooltip text */
+  .tooltip-custom .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: lightcyan;
+    pointer-events: none;
+    opacity: 0.95;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    /* z-index: 10; */
+  }
