@@ -37,7 +37,35 @@ class Graph {
                 }
             }
         }
+        //initialize links
+        let newAnimeLinks = [];
+        for (let i = 0; i < genresNodes.length; i++) {
+            for (let j = i + 1; j < genresNodes.length; j++) {
+                let sourceGenre = genresNodes[i];
+                let targetGenre = genresNodes[j];
+                newAnimeLinks.push({ id: sourceGenre.name + targetGenre.name, source: sourceGenre.id, target: targetGenre.id, count: 0 })
+            }
+        }
+        for (let i = 0; i < mappedAnimeToGenre.length; i++) {
+            let current = mappedAnimeToGenre[i];
+            let currentAnime = current.anime.anime;
+            let genres = current.genres
+            if (genres.length !== 0) {
+                for (let j = 0; j < genres.length; j++) {
+                    for (let k = genres.length - 1; k > j; k--) {
+                        let sourceGenre = genresNodes.find(genre => genre.name === genres[j]);
+                        let targetGenre = genresNodes.find(genre => genre.name === genres[k]);
+                        let id = sourceGenre.name + targetGenre.name;
+                        let linkIndex = newAnimeLinks.findIndex(link => link.id === id);
 
+                        if (linkIndex) {
+                            newAnimeLinks[linkIndex].count++;
+                        }
+                    }
+                }
+            }
+        }
+        debugger
         let svg = graph.append("svg")
             .attr('width', svgWidth)
             .attr('height', svgHeight);
@@ -51,11 +79,12 @@ class Graph {
         // Initialize the links
         var links = linkLayer
             .selectAll("line")
-            .data(animeLinks)
+            .data(newAnimeLinks)
             .enter()
             .append("line")
+            .style("stroke-width", d => d.count / 15)
             .style("stroke", "#aaa")
-            // Now we create the node group, and the nodes inside it
+        // Now we create the node group, and the nodes inside it
         let nodeLayer = svg.append("g")
             .attr("class", "nodes");
         // Initialize the nodes
@@ -64,10 +93,10 @@ class Graph {
             .data(genresNodes)
             .enter()
             .append("circle")
-            .attr("r", 20)
+            .attr("r", 40)
             .style("fill", "#69b3a2")
-            // We can add a tooltip to each node, so when you hover over a circle, you 
-            //  see the node's id
+        // We can add a tooltip to each node, so when you hover over a circle, you 
+        //  see the node's id
         nodes.append("title")
             .text(d => d.name);
 
@@ -77,7 +106,7 @@ class Graph {
             .data(genresNodes)
             .enter().append("text")
             .attr("class", "label")
-            .text(function(d) {
+            .text(function (d) {
                 let formatteGenre = d.name.replace("genre_", "");
                 return formatteGenre.charAt(0).toUpperCase() + formatteGenre.slice(1);
             });
@@ -86,27 +115,27 @@ class Graph {
         // Let's list the force we wanna apply on the network
         var simulation = d3.forceSimulation(genresNodes) // Force algorithm is applied to data.nodes
             .force("link", d3.forceLink() // This force provides links between nodes
-                .id(function(d) { return d.id; }) // This provide  the id of a node
-                .links(animeLinks) // and this the list of links
+                .id(function (d) { return d.id; }) // This provide  the id of a node
+                .links(newAnimeLinks) // and this the list of links
             )
-            .force("charge", d3.forceManyBody().strength(-1000)) // This adds repulsion between nodes. Play with the -400 for the repulsion strength
+            .force("charge", d3.forceManyBody().strength(-4000)) // This adds repulsion between nodes. Play with the -400 for the repulsion strength
             .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2)) // This force attracts nodes to the center of the svg area
             .on("tick", ticked);
 
         // This function is run at each iteration of the force algorithm, updating the nodes position.
         function ticked() {
             links
-                .attr("x1", function(d) { return d.source.x; })
-                .attr("y1", function(d) { return d.source.y; })
-                .attr("x2", function(d) { return d.target.x; })
-                .attr("y2", function(d) { return d.target.y; });
+                .attr("x1", function (d) { return d.source.x; })
+                .attr("y1", function (d) { return d.source.y; })
+                .attr("x2", function (d) { return d.target.x; })
+                .attr("y2", function (d) { return d.target.y; });
 
             nodes
-                .attr("cx", function(d) { return d.x; })
-                .attr("cy", function(d) { return d.y; });
+                .attr("cx", function (d) { return d.x; })
+                .attr("cy", function (d) { return d.y; });
             labels
-                .attr("x", function(d) { return d.x; })
-                .attr("y", function(d) { return d.y; })
+                .attr("x", function (d) { return d.x - 30; })
+                .attr("y", function (d) { return d.y + 10; })
                 .style("font-size", "20px").style("fill", "white");
         }
 
