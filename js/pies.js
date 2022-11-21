@@ -45,7 +45,8 @@ class Pies {
         .attr("fill", "black")
         .attr('x', 70 + this.offsetX)
         .attr('y', (d,i) => i * 55 + 65)
-        .attr("rx", 3).attr("ry", 3);
+        .attr("rx", 3).attr("ry", 3)
+        .attr("style", "pointer-events: none;");
     }
     drawKey(){
 
@@ -58,7 +59,6 @@ class Pies {
         .join('rect')
         .text(d=> d)
         .attr("fill", d => {
-            console.log(d, this.hoveredOn);
             if(this.hoveredOn === null || this.hoveredOn === d)
                 return this.ordScale(d);
             return 'lightgrey';
@@ -67,7 +67,9 @@ class Pies {
         .attr('y', (d,i) => i * 55 + 35)
         .attr("rx", 3).attr("ry", 3)
         .attr("width", 100)
-        .attr("height", 50) ;
+        .attr("height", 50)
+        .on('mouseover', (event, d) => this.updateHoverOn(event, {x :0, y:0, stars:d}))
+        .on('mouseout', (event, d) => this.updateHoverOff(event, {x :0, y:0, stars:d}));
 
     }
     update() {
@@ -208,13 +210,21 @@ class Pies {
           .on('mouseover', (event, d) => this.updateHoverOn(event, d))
           .on('mouseout', (event, d) => this.updateHoverOff(event, d))
           .transition()
-            .duration(1200)
-          .attr("fill", d => this.ordScale(d.stars));
-
+            .duration(1200);
+        this.colorWaffles(svg);
         cells
           .attr("rx", 3).attr("ry", 3)
           .attr("width", cellSize).attr("height", cellSize) ;
           
+    }
+    colorWaffles(svg){
+        svg.selectAll(".waffle")
+        .selectAll('rect')  
+        .attr("fill", d => { 
+            if(this.hoveredOn === null || this.hoveredOn === d.stars)
+            return this.ordScale(d.stars);
+        return 'lightgrey';});
+        
     }
     waffleMyData(data){
         data = this.forceTotal(data);
@@ -282,7 +292,8 @@ class Pies {
         d3.select("#anime-tooltip-header").text('' + this.globalApplicationState.selected_anime.anime.replaceAll('_', ' '));
         d3.select("#anime-tooltip-top").text("Number of Votes: " + ani.total);
         d3.select("#anime-tooltip-bottom").text("Percentage of Votes: " + ani.rate_count.toFixed(3) + "%");
-
+        this.colorWaffles(this.svg_genre);
+        this.colorWaffles(this.svg_anime);
         this.drawKey();
     }
     updateHoverOff(event, data){
@@ -293,7 +304,8 @@ class Pies {
             .attr('style',
                 "left: " + 0 + "px; top : " + 0+ "px; visibility: hidden")
         this.hoveredOn = null;
-
+        this.colorWaffles(this.svg_genre);
+        this.colorWaffles(this.svg_anime);
         this.drawKey();
     }
 }
