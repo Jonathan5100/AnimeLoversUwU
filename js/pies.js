@@ -6,6 +6,7 @@ class Pies {
     padding= {x:0, y:0};
     colors = ['#ffd384','#94ebcd','#fbaccc','#6dd6c8','#fa7f72'];
     ratings = ["Five Star","Four Star","Three Star","Two Star","One Star"];
+    deselect = 'lightgrey';
     constructor(globalApplicationState){
         this.globalApplicationState = globalApplicationState;
         this.svg_anime =  d3.select('#pie-chart-anime-div').append('svg')
@@ -61,7 +62,7 @@ class Pies {
         .attr("fill", d => {
             if(this.hoveredOn === null || this.hoveredOn === d)
                 return this.ordScale(d);
-            return 'lightgrey';
+            return this.deselect;
         })
         .attr('x', 50 + this.offsetX)
         .attr('y', (d,i) => i * 55 + 35)
@@ -223,7 +224,7 @@ class Pies {
         .attr("fill", d => { 
             if(this.hoveredOn === null || this.hoveredOn === d.stars)
             return this.ordScale(d.stars);
-        return 'lightgrey';});
+        return this.deselect;});
         
     }
     waffleMyData(data){
@@ -276,10 +277,12 @@ class Pies {
         let c = i - r * 10;
         let x = c * (this.waffleSize + this.padding.x); 
         let y = r * (this.waffleSize + this.padding.y);
+        
         this.hoveredOn = data.stars;
         d3.select("#genre-tooltip")
         .attr('style',
-            "left: " + (x + 65) + "px; top : " + (y -20 )+ "px; visibility: visible")
+            // "left: " + (x + 65) + "px; top : " + (y -20 )+ "px; visibility: visible")
+            "left: " + (435) + "px; top : " + (200 )+ "px; visibility: visible")
         let gen = this.data_genre.find(({ stars }) => stars === data.stars);
         
         d3.select("#genre-tooltip-header").text('' + this.globalApplicationState.selected_genre.replaceAll('_', ' '));
@@ -288,7 +291,7 @@ class Pies {
         let ani = this.data_anime.find(({ stars }) => stars === data.stars);
         d3.select("#anime-tooltip")
         .attr('style',
-            "left: " + (x + 65) + "px; top : " +( y -20 ) + "px; visibility: visible")
+            "left: " + (-180) + "px; top : " +(200 ) + "px; visibility: visible")
         d3.select("#anime-tooltip-header").text('' + this.globalApplicationState.selected_anime.anime.replaceAll('_', ' '));
         d3.select("#anime-tooltip-top").text("Number of Votes: " + ani.total);
         d3.select("#anime-tooltip-bottom").text("Percentage of Votes: " + ani.rate_count.toFixed(3) + "%");
