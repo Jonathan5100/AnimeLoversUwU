@@ -65,10 +65,21 @@ class Graph {
                 }
             }
         }
-        debugger
         let svg = graph.append("svg")
             .attr('width', svgWidth)
             .attr('height', svgHeight);
+        /** Find the node that was clicked, if any, and return it. */
+        function dragSubject() {
+            const x = transform.invertX(d3.event.x),
+                y = transform.invertY(d3.event.y);
+            const node = findNode(genresNodes, x, y, 40);
+            if (node) {
+                node.x = transform.applyX(node.x);
+                node.y = transform.applyY(node.y);
+            }
+            // else: No node selected, drag container
+            return node;
+        }
         let color = d3.scaleOrdinal(d3.schemePaired);
         // First we create the links in their own group that comes before the node 
         //  group (so the circles will always be on top of the lines)
@@ -82,7 +93,7 @@ class Graph {
             .data(newAnimeLinks)
             .enter()
             .append("line")
-            .style("stroke-width", d => d.count / 15)
+            .style("stroke-width", d => d.count / 12)
             .style("stroke", "#aaa")
         // Now we create the node group, and the nodes inside it
         let nodeLayer = svg.append("g")
@@ -95,6 +106,13 @@ class Graph {
             .append("circle")
             .attr("r", 40)
             .style("fill", "#69b3a2")
+            // This part adds event listeners to each of the nodes; when you click,
+            //  move, and release the mouse on a node, each of these functions gets 
+            //  called (we've defined them at the end of the file)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
         // We can add a tooltip to each node, so when you hover over a circle, you 
         //  see the node's id
         nodes.append("title")
@@ -121,7 +139,6 @@ class Graph {
             .force("charge", d3.forceManyBody().strength(-4000)) // This adds repulsion between nodes. Play with the -400 for the repulsion strength
             .force("center", d3.forceCenter(svgWidth / 2, svgHeight / 2)) // This force attracts nodes to the center of the svg area
             .on("tick", ticked);
-
         // This function is run at each iteration of the force algorithm, updating the nodes position.
         function ticked() {
             links
@@ -139,5 +156,21 @@ class Graph {
                 .style("font-size", "20px").style("fill", "white");
         }
 
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
     }
 }
