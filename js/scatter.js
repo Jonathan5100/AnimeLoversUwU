@@ -92,7 +92,7 @@ class Scatter {
         this.svg
             .transition()
             .duration(800)
-            .selectAll("circle")
+            .selectAll(".circ")
             .attr("cx", d => d.x)
             .attr("cy", d => {
                 let temp = +d.data.episodes;
@@ -127,12 +127,12 @@ class Scatter {
         // check that this has any genres
         if (genresOfSelected.length == 29) {
 
-            d3.selectAll("circle").attr("opacity", 1)
+            d3.selectAll(".circ").attr("opacity", 1)
 
             return
         }
 
-        d3.selectAll("circle").attr("opacity", d => {
+        d3.selectAll(".circ").attr("opacity", d => {
 
             // if the intersection of genres is not empty
             if (d.data != null && d.data[genresOfSelected] === "0.0") return 0.1
@@ -187,7 +187,7 @@ class Scatter {
 
         // add circles
         this.svg
-            .selectAll("circle")
+            .selectAll(".circ")
             .transition()
             .duration(800)
             .attr("cx", d => d.x)
@@ -324,6 +324,7 @@ class Scatter {
 
     // draws 1D graph 
     draw1D() {
+        this.svg.selectAll(".legendCircle").attr("opacity", 1)
 
         this.removeAll(".axis2D")
         this.DrawAxis1D();
@@ -334,6 +335,7 @@ class Scatter {
     draw2D() {
 
         this.removeAll(".axis1D")
+        this.svg.selectAll(".legendCircle").attr("opacity", 0)
         this.DrawAxis2D();
         this.DrawCircle2D();
     }
@@ -414,5 +416,31 @@ class Scatter {
             .attr("y", y - 6)
             .text(this.votes[1] + " votes");
 
+        // circle legend
+        let temp = [this.totals[0], this.totals[1] / 16, this.totals[1] / 9, this.totals[1] / 4, this.totals[1] / 2, this.totals[1]]
+        console.log(temp)
+        let circles = this.svg.append("g")
+            .selectAll(".circ")
+            .data(temp)
+            .join("circle")
+            .attr("class", "legendCircle")
+            .attr("stroke", "black")
+            .attr("fill", "#6699FF")
+            .attr("cx", (d, i) => {
+                return (i) * 90 + 50
+            })
+            .attr("cy", y)
+            .attr("r", d => this.size(d));
+
+        this.svg.append("g")
+            .selectAll("text")
+            .data(temp)
+            .join("text")
+            .attr("class", "legendCircle")
+            .attr("x",
+                (d, i) => (i) * 90 + 30)
+            .attr("y", y + -50)
+            .attr("font-weight", "bold")
+            .text((d, i) => Math.floor(d) + " Ep.");
     }
 }
