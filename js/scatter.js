@@ -113,15 +113,16 @@ class Scatter {
 
         // get genre of selected animes
         let genresOfSelected = JSON.parse(d3.select("#genre_selector").property("value"));
-        let selectedAnime = JSON.parse(d3.select("#anime_selector").property("value"));
+        let selectedAnime = d3.select("#anime_selector").property("value") == "Pick an Anime" ?
+            null : JSON.parse(d3.select("#anime_selector").property("value"));
 
         // highlight selected and unselect all else
         d3.selectAll(".circ")
             .attr("stroke", (d) => {
-                return (d.data.anime == selectedAnime.anime) ? "#CC5500" : "black"
+                return (selectedAnime != null && d.data.anime == selectedAnime.anime) ? "#CC5500" : "black"
             })
             .attr("stroke-width", (d) => {
-                return (d.data.anime == selectedAnime.anime) ? 4 : 1
+                return (selectedAnime != null && d.data.anime == selectedAnime.anime) ? 4 : 1
             })
 
         // check that this has any genres
@@ -247,7 +248,6 @@ class Scatter {
         // click event added to all circles
         //https://alvarotrigo.com/blog/javascript-select-option/
         let click = function(event, d) {
-
             // correct image
             d3.select("#anime_image")
                 .attr("src", d.data.anime_img)

@@ -61,13 +61,17 @@ Promise.all([anime_data]).then((data) => {
 
     // when anime is selected
     animeSelector.on("change", function(d) {
-        // store selected anime in global and local settings
-        let selectedOption = JSON.parse(d3.select(this).property("value"));
+        let selectedOption = "Pick an Anime"
+            // store selected anime in global and local settings
+        if (d3.select(this).property("value") != "Pick an Anime") {
+            selectedOption = JSON.parse(d3.select(this).property("value"));
+
+            // set image
+            d3.select("#anime_image")
+                .attr("src", selectedOption.anime_img);
+        }
         globalApplicationState.selected_anime = selectedOption;
 
-        // set image
-        d3.select("#anime_image")
-            .attr("src", selectedOption.anime_img);
 
         // get genres of anime
         let geners = globalApplicationState.anime_utils.getGeners(selectedOption)
