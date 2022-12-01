@@ -7,9 +7,12 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,700&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
     <link rel="stylesheet" href="styles.css" />
 </head>
@@ -36,21 +39,23 @@
                     <div class="row">
                         <div class="col" align="center">
                             <select id="anime_selector" class="form-select" style="width: 200px;">
-                        <option selected>Pick an Anime</option>
-                    </select>
+                                <option selected>Pick an Anime</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col" align="center">
 
                             <select id="genre_selector" class="form-select" style="width: 200px;">
-                    </select>
+                            </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col" align="center">
 
-                            <img id="anime_image" src="https://img1.ak.crunchyroll.com/i/spire4/1c1df98707aa0f22aa54342af725e48a1491245343_full.jpg" class="rounded  img-fluid  w-1 anime-image" alt="N">
+                            <img id="anime_image"
+                                src="https://img1.ak.crunchyroll.com/i/spire4/1c1df98707aa0f22aa54342af725e48a1491245343_full.jpg"
+                                class="rounded  img-fluid  w-1 anime-image" alt="N">
                         </div>
                     </div>
                 </div>
@@ -64,10 +69,17 @@
                                 <h1 class="display-4">Anime Lovers UWU</h1>
                                 <p class="lead">Amitoj Singh, Jonathan Rodriguez, John Huynh</p>
 
-                                <p class="card-text">Our goal is to empower users by giving them a new method to find animes to watch. We hope to offer a unique sense of exploration when allowing users to find an anime, unlike any other simple list or site would. Our goal
-                                    is that through the plot chart and pie chart users will be able to find specific animes statistically similar to their favorite animes. Then through the node graph, we hope to have our users be able to explore new genres
-                                    by seeing genres with significant overlap with other genres. Select your favorite anime through the list or plot chart to learn more about the animes in that genre! Use the waffle chart to learn more about how a selected
-                                    anime or genre is received by the public! Use the node graph to learn more about which genres are commonly seen together!
+                                <p class="card-text">Our goal is to empower users by giving them a new method to find
+                                    animes to watch. We hope to offer a unique sense of exploration when allowing users
+                                    to find an anime, unlike any other simple list or site would. Our goal
+                                    is that through the plot chart and pie chart users will be able to find specific
+                                    animes statistically similar to their favorite animes. Then through the node graph,
+                                    we hope to have our users be able to explore new genres
+                                    by seeing genres with significant overlap with other genres. Select your favorite
+                                    anime through the list or plot chart to learn more about the animes in that genre!
+                                    Use the waffle chart to learn more about how a selected
+                                    anime or genre is received by the public! Use the node graph to learn more about
+                                    which genres are commonly seen together!
 
                                 </p>
 
@@ -78,7 +90,8 @@
 
 
                 <div class="container-fluid fixed-container">
-                    <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" class="scrollspy-example" tabindex="0">
+                    <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0"
+                        class="scrollspy-example" tabindex="0">
                         <div class="row">
                             <div id="" class="col-12 fixed-full m-2">
 
@@ -119,11 +132,16 @@
                                     <div id="pie-chart-key-div" class="col-4 mb-5">
                                         <span id="info-text" class="hide">
                                             Compared to other animes in the
-                                            <span class="genre_text genre_name"></span> , "<span class="anime_text anime_name"></span>" has a
-                                        <b id="BW5"></b> then average percentage of 5 stars. (<span id="G5" class="genre_text"></span><span class="genre_text">%</span> vs
-                                        <span id="A5" class="anime_text"></span><span class="anime_text">%</span>). When comparing one stars, "<span class="anime_text anime_name"></span>" has a
-                                        <b id="BW1"></b> than average percentage. (<span id="G1" class="genre_text"></span><span class="genre_text">%</span> vs
-                                        <span id="A1" class="anime_text"></span><span class="anime_text">%</span>).
+                                            <span class="genre_text genre_name"></span> , "<span
+                                                class="anime_text anime_name"></span>" has a
+                                            <b id="BW5"></b> then average percentage of 5 stars. (<span id="G5"
+                                                class="genre_text"></span><span class="genre_text">%</span> vs
+                                            <span id="A5" class="anime_text"></span><span class="anime_text">%</span>).
+                                            When comparing one stars, "<span class="anime_text anime_name"></span>" has
+                                            a
+                                            <b id="BW1"></b> than average percentage. (<span id="G1"
+                                                class="genre_text"></span><span class="genre_text">%</span> vs
+                                            <span id="A1" class="anime_text"></span><span class="anime_text">%</span>).
                                         </span>
                                         <br>
                                     </div>
@@ -142,8 +160,9 @@
                             <div id="graph-div" class="col-12">
 
                             </div>
-                            <p class="lead m-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            <p class="lead m-4">Nodes in this graph represents all anime genres. Edges in this graph
+                                represents the animes that contain both genres and its width is how much
+                                the amount of animes connecting those two genres.
                             </p>
 
                         </div>

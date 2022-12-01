@@ -3,7 +3,7 @@ class Graph {
         this.globalApplicationState = globalApplicationState;
 
         let graph = d3.select("#graph-div");
-        const svgWidth = 2000;
+        const svgWidth = 1400;
         const svgHeight = 1100;
         //get all genres
         let formattedGenres = Object.keys(this.globalApplicationState.anime_data[0]).filter(key => key.includes("genre")).map((genre) => {
@@ -43,7 +43,7 @@ class Graph {
             for (let j = i + 1; j < genresNodes.length; j++) {
                 let sourceGenre = genresNodes[i];
                 let targetGenre = genresNodes[j];
-                newAnimeLinks.push({ id: sourceGenre.name + targetGenre.name, source: sourceGenre.id, target: targetGenre.id, count: 0 })
+                newAnimeLinks.push({ id: sourceGenre.name + "~" + targetGenre.name, source: sourceGenre.id, target: targetGenre.id, count: 0 })
             }
         }
         for (let i = 0; i < mappedAnimeToGenre.length; i++) {
@@ -55,9 +55,8 @@ class Graph {
                     for (let k = genres.length - 1; k > j; k--) {
                         let sourceGenre = genresNodes.find(genre => genre.name === genres[j]);
                         let targetGenre = genresNodes.find(genre => genre.name === genres[k]);
-                        let id = sourceGenre.name + targetGenre.name;
+                        let id = sourceGenre.name + "~" + targetGenre.name;
                         let linkIndex = newAnimeLinks.findIndex(link => link.id === id);
-
                         if (linkIndex) {
                             newAnimeLinks[linkIndex].count++;
                         }
@@ -83,12 +82,12 @@ class Graph {
         let color = d3.scaleOrdinal(d3.schemePaired);
         // First we create the links in their own group that comes before the node 
         //  group (so the circles will always be on top of the lines)
-        let linkLayer = svg.append("g")
+        this.linkLayer = svg.append("g")
             .attr("class", "links");
         // Now let's create the lines
 
         // Initialize the links
-        var links = linkLayer
+        var links = this.linkLayer
             .selectAll("line")
             .data(newAnimeLinks)
             .enter()
@@ -96,16 +95,16 @@ class Graph {
             .style("stroke-width", d => d.count / 12)
             .style("stroke", "#aaa")
         // Now we create the node group, and the nodes inside it
-        let nodeLayer = svg.append("g")
+        this.nodeLayer = svg.append("g")
             .attr("class", "nodes");
         // Initialize the nodes
-        var nodes = nodeLayer
+        var nodes = this.nodeLayer
             .selectAll("circle")
             .data(genresNodes)
             .enter()
             .append("circle")
-            .attr("r", 40)
-            .style("fill", "#69b3a2")
+            .attr("r", 60)
+            .style("fill", "#6698FE")
             // This part adds event listeners to each of the nodes; when you click,
             //  move, and release the mouse on a node, each of these functions gets 
             //  called (we've defined them at the end of the file)
@@ -113,6 +112,9 @@ class Graph {
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
+        nodes
+            .append("span")
+            .text(d => d.name);
         // We can add a tooltip to each node, so when you hover over a circle, you 
         //  see the node's id
         nodes.append("title")
@@ -125,11 +127,9 @@ class Graph {
             .enter().append("text")
             .attr("class", "label")
             .text(function (d) {
-                let formatteGenre = d.name.replace("genre_", "");
-                return formatteGenre.charAt(0).toUpperCase() + formatteGenre.slice(1);
+                let formattedGenre = d.name.replace("genre_", "");
+                return formattedGenre.replaceAll(" ", "\n").charAt(0).toUpperCase() + formattedGenre.slice(1);
             });
-        //construct forces
-        const forceNode = d3.forceManyBody();
         // Let's list the force we wanna apply on the network
         var simulation = d3.forceSimulation(genresNodes) // Force algorithm is applied to data.nodes
             .force("link", d3.forceLink() // This force provides links between nodes
@@ -153,7 +153,7 @@ class Graph {
             labels
                 .attr("x", function (d) { return d.x - 30; })
                 .attr("y", function (d) { return d.y + 10; })
-                .style("font-size", "20px").style("fill", "white");
+                .style("font-size", "17px").style("fill", "black");
         }
 
         function dragstarted(event, d) {
@@ -172,5 +172,32 @@ class Graph {
             d.fx = null;
             d.fy = null;
         }
+    }
+    update() {
+        this.resetGraph();
+        if (this.globalApplicationState.selected_anime === null) {
+            return;
+        }
+        this.selectedAnimeGenres = this.globalApplicationState.anime_utils.getGeners(this.globalApplicationState.selected_anime);
+        let nodes = this.nodeLayer.selectAll("circle");
+        let filteredNodes = nodes.filter((d, i) => {
+            return this.selectedAnimeGenres.includes(d.name);
+        });
+        filteredNodes
+            .style("stroke", "#F44937")
+            .style("stroke-width", 8);
+        let links = this.linkLayer.selectAll("line");
+        let filteredLinks = links.filter((d) => {
+            const [sourceGenre, targetGenre] = d.id.split("~");
+            return (this.selectedAnimeGenres.includes(sourceGenre) && this.selectedAnimeGenres.includes(targetGenre));
+        });
+        filteredLinks
+            .style('stroke', '#F44937');
+    }
+    resetGraph() {
+        let links = this.linkLayer.selectAll("line");
+        links.style("stroke", "#aaa");
+        let nodes = this.nodeLayer.selectAll("circle");
+        nodes.style('stroke', 'transparent');
     }
 }

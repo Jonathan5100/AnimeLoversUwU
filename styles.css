@@ -37,7 +37,7 @@
 }
 
 #pie-row {
-    background-color: lightgoldenrodyellow;
+    background-color: #e8eefc;
 }
 
 .pieHeaders {
@@ -69,7 +69,7 @@
 }
 
 .hide {
-    display: none!important;
+    display: none !important;
 }
 
 #sidebar {
@@ -79,7 +79,7 @@
     height: 94.5vh;
     overflow-y: auto;
     /* z-index: 999; */
-    background: lightcoral;
+    background: #92B6FF;
     color: #fff;
 }
 
@@ -100,15 +100,15 @@ div.tooltip {
     pointer-events: none;
 }
 
-/* Tooltip container from https://www.w3schools.com/css/css_tooltip.asp */ 
+/* Tooltip container from https://www.w3schools.com/css/css_tooltip.asp */
 .tooltip-custom {
     position: relative;
     display: inline-block;
 
-  }
-  
-  /* Tooltip text */
-  .tooltip-custom .tooltiptext {
+}
+
+/* Tooltip text */
+.tooltip-custom .tooltiptext {
     visibility: hidden;
     width: 200px;
     background-color: lightcyan;
@@ -118,8 +118,8 @@ div.tooltip {
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
-   
+
     /* Position the tooltip text - see examples below! */
     position: absolute;
     /* z-index: 10; */
-  }
+}

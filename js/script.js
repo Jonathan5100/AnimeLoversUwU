@@ -37,10 +37,10 @@ Promise.all([anime_data]).then((data) => {
     animeSelector.selectAll('option').data(anime_data)
         .enter()
         .append('option')
-        .attr('value', function(d) {
+        .attr('value', function (d) {
             return JSON.stringify(d);
         })
-        .text(function(d) {
+        .text(function (d) {
             return d.anime;
         });
 
@@ -52,17 +52,17 @@ Promise.all([anime_data]).then((data) => {
     genreSelector.selectAll('option').data(allGenres)
         .enter()
         .append('option')
-        .attr('value', function(d) {
+        .attr('value', function (d) {
             return JSON.stringify(d);
         })
-        .text(function(d) {
+        .text(function (d) {
             return d
         })
 
     // when anime is selected
-    animeSelector.on("change", function(d) {
+    animeSelector.on("change", function (d) {
         let selectedOption = "Pick an Anime"
-            // store selected anime in global and local settings
+        // store selected anime in global and local settings
         if (d3.select(this).property("value") != "Pick an Anime") {
             selectedOption = JSON.parse(d3.select(this).property("value"));
 
@@ -75,7 +75,7 @@ Promise.all([anime_data]).then((data) => {
 
         // get genres of anime
         let geners = globalApplicationState.anime_utils.getGeners(selectedOption)
-            // if no genres, give anime all genres
+        // if no genres, give anime all genres
         if (geners.length == 0)
             geners = globalApplicationState.anime_utils.getAllGenres()
         let appending = genreSelector.selectAll('option').data([]);
@@ -88,10 +88,10 @@ Promise.all([anime_data]).then((data) => {
         appending = genreSelector.selectAll('option').data(geners);
         appending.enter()
             .append('option')
-            .attr('value', function(d) {
+            .attr('value', function (d) {
                 return JSON.stringify(d);
             })
-            .text(function(d) {
+            .text(function (d) {
                 return d;
             });
 
@@ -109,11 +109,11 @@ Promise.all([anime_data]).then((data) => {
 
         globalApplicationState.scatter.update();
         globalApplicationState.pies.update();
-
+        globalApplicationState.graph.update();
     })
 
     // define what happens when genre is selected
-    genreSelector.on("change", function(d) {
+    genreSelector.on("change", function (d) {
         let selectedOption = JSON.parse(d3.select(this).property("value"));
         globalApplicationState.selected_genre = selectedOption;
         globalApplicationState.pies.updateGenre();
