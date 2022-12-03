@@ -77,10 +77,12 @@ class Pies {
 
         // this.drawPie(this.svg_anime, data_anime);
 
-        if (this.globalApplicationState.selected_anime === null)
+        if (this.globalApplicationState.selected_anime === null || this.globalApplicationState.selected_anime === "Pick an Anime")
             return;
         this.data_anime = this.getRatingsPerAnime(this.globalApplicationState.selected_anime);
         this.updateGenre();
+        d3.select("#anime-tooltip-header").text('' + this.globalApplicationState.selected_anime.anime.replaceAll('_', ' '));
+
 
         // + ' '
         // + 
@@ -101,9 +103,11 @@ class Pies {
     }
     storyTelling() {
         d3.select('#info-text').attr('class', '');
-        d3.select("#anime_header").text('' + this.globalApplicationState.selected_anime.anime);
+        if (this.globalApplicationState.selected_anime !== null && this.globalApplicationState.selected_anime !== "Pick an Anime"){
+            d3.select("#anime_header").text('' + this.globalApplicationState.selected_anime.anime);
+            d3.selectAll('.anime_name').text(this.globalApplicationState.selected_anime.anime);
+        }
         d3.selectAll('.genre_name').text('' + this.globalApplicationState.selected_genre.replaceAll('_', ' '));
-        d3.selectAll('.anime_name').text(this.globalApplicationState.selected_anime.anime);
         d3.select('#BW5').text((this.data_anime[0].rate_count >= this.data_genre[0].rate_count ? 'better' : 'worst'));
         d3.select('#A5').text(Math.round(this.data_anime[0].rate_count * 100) / 100);
         d3.select('#G5').text(Math.round(this.data_genre[0].rate_count * 100) / 100);
@@ -289,13 +293,14 @@ class Pies {
         d3.select("#genre-tooltip-header").text('' + this.globalApplicationState.selected_genre.replaceAll('_', ' '));
         d3.select("#genre-tooltip-top").text("Number of Votes: " + gen.total);
         d3.select("#genre-tooltip-bottom").text("Percentage of Votes: " + gen.rate_count.toFixed(3) + "%");
+        
         let ani = this.data_anime.find(({ stars }) => stars === data.stars);
         d3.select("#anime-tooltip")
             .attr('style',
                 "left: " + (-180) + "px; top : " + (200) + "px; visibility: visible")
-        d3.select("#anime-tooltip-header").text('' + this.globalApplicationState.selected_anime.anime.replaceAll('_', ' '));
         d3.select("#anime-tooltip-top").text("Number of Votes: " + ani.total);
         d3.select("#anime-tooltip-bottom").text("Percentage of Votes: " + ani.rate_count.toFixed(3) + "%");
+        
         this.colorWaffles(this.svg_genre);
         this.colorWaffles(this.svg_anime);
         this.drawKey();
