@@ -7,6 +7,7 @@ which parts are your code
     and other CSS/HTML elements</li>
     <li> for the waffle chart(pies.js) we used this link as a rough helper, we heavily modified it however.
         https://observablehq.com/@analyzer2004/waffle-chart </li>
+    <li>For graph we used this link as source, again it is heavily modified https://observablehq.com/@d3/force-directed-graph </li>
 </ul>
 
 non-obvious features of your interface
