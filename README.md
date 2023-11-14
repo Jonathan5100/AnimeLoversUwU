@@ -25,5 +25,6 @@ Links
     <ul>
     <li>Website -  https://jonathan5100.github.io/AnimeLoversUwU/home</li>
     <li>Process book - https://jonathan5100.github.io/AnimeLoversUwU/ProcessBook.pdf</li>
+    <li>Video Tutorial - https://www.youtube.com/watch?v=PRqjX8Hn64w</li>
     </ul>
-    Video Tutorial - [![Video](https://www.youtube.com/watch?v=PRqjX8Hn64w)
+    
