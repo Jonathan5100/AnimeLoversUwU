@@ -1,5 +1,10 @@
 # AnimeLoversUwU
-
+Project Summary:
+Processing data from Crunchyroll on Anime and users ratings. 
+We display this information with:
+  1. bubble chart: Comparing Rating and number of episodes in the anime
+  2. A square pie chart: Comparing the animes rating and the other animes ratings in the selected genre
+  3. A graph: Showing the connections of every genre that animes share. The more animes share a specific genre, the bigger the connecting edge/line is. Highlights red on genres in selected anime.
 which parts are your code
 <ul>
   <li>The content of the js folder are all our javascript files </li>
